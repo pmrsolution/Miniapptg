@@ -5,7 +5,10 @@ import { Avatar } from './Avatar';
 
 export default function Sidebar({ selectedChat, setSelectedChat }) {
   const [search, setSearch] = useState('');
-  const { data: chats = [], isLoading, error } = useQuery(['chats'], getChats);
+  const { data: chats = [], isLoading, error } = useQuery({
+    queryKey: ['chats'],
+    queryFn: getChats,
+  });
   const list = chats.filter(ch => ch.first_name?.toLowerCase().includes(search.toLowerCase()));
   return (
     <aside className="sidebar">
