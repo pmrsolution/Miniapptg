@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getChats } from '../services/chatApi';
+import useChats from '../hooks/useChats';
 import { Avatar } from './Avatar';
 
 export default function Sidebar({ selectedChat, setSelectedChat }) {
   const [search, setSearch] = useState('');
-  const { data: chats = [], isLoading, error } = useQuery({
-    queryKey: ['chats'],
-    queryFn: getChats,
-  });
-  const list = chats.filter(ch => ch.first_name?.toLowerCase().includes(search.toLowerCase()));
+  const { data: chats = [], isLoading, error } = useChats();
+  const list = chats.output || chats || [];
+  const filtered = list.filter(ch => ch.first_name?.toLowerCase().includes(search.toLowerCase()));
   return (
     <aside className="sidebar">
       <input
@@ -20,7 +17,7 @@ export default function Sidebar({ selectedChat, setSelectedChat }) {
       <div className="chat-list">
         {isLoading && <div>Загрузка...</div>}
         {error && <div>Ошибка загрузки чатов</div>}
-        {list.map(ch => (
+        {filtered.map(ch => (
           <button
             key={ch.chat_id}
             className={`chat-item ${selectedChat === ch.chat_id ? 'selected' : ''}`}

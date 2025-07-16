@@ -10,4 +10,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
-} 
+}
+
+.layout { display: flex; height: 100vh; }
+.sidebar { width: 280px; overflow-y: auto; border-right: 1px solid #e5e7eb; padding: .5rem; }
+.chat { flex: 1; display: flex; flex-direction: column; }
+.chat .input-row { display: flex; gap: .5rem; background: #f9fafb; padding: .75rem; }
+.loading { display: flex; align-items: center; justify-content: center; height: 100vh; } 
