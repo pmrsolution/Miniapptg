@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { chatsStub } from '../data/chatsStub'; // замените на реальный запрос
+import { useQuery } from '@tanstack/react-query';
+import { getChats } from '../services/chatApi';
 import { Avatar } from './Avatar';
 
 export default function Sidebar({ selectedChat, setSelectedChat }) {
   const [search, setSearch] = useState('');
-  const list = chatsStub.filter(ch => ch.first_name.toLowerCase().includes(search.toLowerCase()));
+  const { data: chats = [], isLoading, error } = useQuery(['chats'], getChats);
+  const list = chats.filter(ch => ch.first_name?.toLowerCase().includes(search.toLowerCase()));
   return (
     <aside className="sidebar">
       <input
@@ -13,6 +15,8 @@ export default function Sidebar({ selectedChat, setSelectedChat }) {
         onChange={e => setSearch(e.target.value)}
       />
       <div className="chat-list">
+        {isLoading && <div>Загрузка...</div>}
+        {error && <div>Ошибка загрузки чатов</div>}
         {list.map(ch => (
           <button
             key={ch.chat_id}

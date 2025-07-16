@@ -8,23 +8,34 @@ async function fetcher(url, bodyObj = null, method = 'POST') {
   return res.json();
 }
 
+export async function getChats() {
+  const res = await fetch('/api/chats');
+  if (!res.ok) throw new Error('Ошибка загрузки чатов');
+  const data = await res.json();
+  return Array.isArray(data.output) ? data.output : Array.isArray(data) ? data : [];
+}
+
+export async function getMessages({ chat_id, limit = 50, before }) {
+  const params = new URLSearchParams({ chat_id, limit });
+  if (before) params.append('before', before);
+  const res = await fetch(`/api/messages?${params}`);
+  if (!res.ok) throw new Error('Ошибка загрузки сообщений');
+  const data = await res.json();
+  return Array.isArray(data.output) ? data.output : Array.isArray(data) ? data : [];
+}
+
 export async function sendMessage({ chat_id, text, file }) {
   const fd = new FormData();
   fd.set('chat_id', chat_id);
-  text && fd.set('text', text);
-  file && fd.set('file', file);
-
-  return fetcher(API_ENDPOINTS.send, fd);
+  if (text) fd.set('text', text);
+  if (file) fd.set('file', file);
+  const res = await fetch('/api/send', { method: 'POST', body: fd });
+  if (!res.ok) throw new Error('Ошибка отправки сообщения');
+  return res.json();
 }
 
 export async function saveUserMessage({ chat_id, user_message }) {
   return fetcher(API_ENDPOINTS.save, { chat_id, user_message });
-}
-
-export async function getMessages({ chat_id, limit = 20, before = null }) {
-  const params = new URLSearchParams({ chat_id, limit });
-  before && params.set('before', before);
-  return fetch(`${API_ENDPOINTS.messages}?${params}`).then(r => r.json());
 }
 
 export async function searchMessages({ chat_id, q }) {
