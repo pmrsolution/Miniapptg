@@ -1,0 +1,33 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/chats",
+      "destination": "https://pmrsolution.ru/webhook/api/chats"
+    },
+    {
+      "source": "/api/messages",
+      "destination": "https://pmrsolution.ru/webhook/api/messages"
+    },
+    {
+      "source": "/api/send",
+      "destination": "https://pmrsolution.ru/webhook/api/send"
+    },
+    {
+      "source": "/api/sendfile",
+      "destination": "https://pmrsolution.ru/webhook/api/sendfile"
+    },
+    {
+      "source": "/api/save_user_message",
+      "destination": "https://pmrsolution.ru/webhook/api/save_user_message"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {"key": "X-Frame-Options", "value": "ALLOWALL"},
+        {"key": "Content-Security-Policy", "value": "frame-ancestors *"}
+      ]
+    }
+  ]
+} 

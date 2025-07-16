@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="telegram-web-app" content="1">
+    <title>Тест Telegram WebApp API</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 12px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .data {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            margin: 10px 0;
+        }
+        button {
+            background: #2481cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Тест Telegram WebApp API</h1>
+        
+        <div id="status"></div>
+        <div id="userInfo"></div>
+        <div id="webAppInfo"></div>
+        
+        <div>
+            <button onclick="checkWebApp()">Проверить WebApp API</button>
+            <button onclick="showUserInfo()">Показать данные пользователя</button>
+            <button onclick="showWebAppInfo()">Показать WebApp данные</button>
+            <button onclick="location.reload()">Обновить страницу</button>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(message, type = 'info') {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = `<div class="status ${type}">${message}</div>`;
+        }
+
+        // Асинхронная проверка WebApp API
+        function checkWebApp() {
+            const tgWebApp = window.Telegram?.WebApp;
+            if (tgWebApp) {
+                // Инициализируем WebApp
+                tgWebApp.ready();
+                tgWebApp.expand();
+                
+                updateStatus('✅ Telegram WebApp API найден и инициализирован!', 'success');
+                
+                // Показываем основную информацию
+                const info = {
+                    version: tgWebApp.version,
+                    platform: tgWebApp.platform,
+                    colorScheme: tgWebApp.colorScheme,
+                    themeParams: tgWebApp.themeParams,
+                    isExpanded: tgWebApp.isExpanded,
+                    viewportHeight: tgWebApp.viewportHeight,
+                    viewportStableHeight: tgWebApp.viewportStableHeight
+                };
+                
+                document.getElementById('webAppInfo').innerHTML = `
+                    <h3>WebApp информация:</h3>
+                    <div class="data">${JSON.stringify(info, null, 2)}</div>
+                `;
+                
+            } else {
+                updateStatus('⏳ Telegram WebApp API не найден, повторная проверка...', 'info');
+                // Повторная проверка через 100мс
+                setTimeout(checkWebApp, 100);
+            }
+        }
+
+        function showUserInfo() {
+            const tgWebApp = window.Telegram?.WebApp;
+            if (tgWebApp) {
+                const user = tgWebApp.initDataUnsafe?.user;
+                
+                if (user) {
+                    document.getElementById('userInfo').innerHTML = `
+                        <h3>Данные пользователя:</h3>
+                        <div class="data">${JSON.stringify(user, null, 2)}</div>
+                    `;
+                } else {
+                    updateStatus('⚠️ Данные пользователя недоступны', 'error');
+                }
+            } else {
+                updateStatus('❌ WebApp API не найден', 'error');
+            }
+        }
+
+        function showWebAppInfo() {
+            const tgWebApp = window.Telegram?.WebApp;
+            if (tgWebApp) {
+                const fullInfo = {
+                    version: tgWebApp.version,
+                    platform: tgWebApp.platform,
+                    colorScheme: tgWebApp.colorScheme,
+                    themeParams: tgWebApp.themeParams,
+                    isExpanded: tgWebApp.isExpanded,
+                    viewportHeight: tgWebApp.viewportHeight,
+                    viewportStableHeight: tgWebApp.viewportStableHeight,
+                    headerColor: tgWebApp.headerColor,
+                    backgroundColor: tgWebApp.backgroundColor,
+                    isClosingConfirmationEnabled: tgWebApp.isClosingConfirmationEnabled,
+                    backButton: tgWebApp.BackButton,
+                    mainButton: tgWebApp.MainButton,
+                    hapticFeedback: tgWebApp.HapticFeedback,
+                    cloudStorage: tgWebApp.CloudStorage,
+                    initData: tgWebApp.initData,
+                    initDataUnsafe: tgWebApp.initDataUnsafe
+                };
+                
+                document.getElementById('webAppInfo').innerHTML = `
+                    <h3>Полная информация WebApp:</h3>
+                    <div class="data">${JSON.stringify(fullInfo, null, 2)}</div>
+                `;
+            } else {
+                updateStatus('❌ WebApp API не найден', 'error');
+            }
+        }
+
+        // Автоматическая проверка при загрузке
+        window.addEventListener('load', function() {
+            updateStatus('🔍 Начинаем проверку Telegram WebApp API...', 'info');
+            setTimeout(checkWebApp, 100);
+        });
+    </script>
+</body>
+</html> 
