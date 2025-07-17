@@ -8,6 +8,7 @@ export default function MessageInput({ chatId }) {
   const [newMessage, setNewMessage] = useState('');
   const [showEmoji, setShowEmoji] = useState(false);
   const [files, setFiles] = useState([]);
+  const [dragActive, setDragActive] = useState(false);
   const textareaRef = useRef(null);
   const sendMessage = useSendMessage(chatId);
 
@@ -28,8 +29,30 @@ export default function MessageInput({ chatId }) {
     alert('Тест: отправить файл с полем data');
   };
 
+  // Drag&Drop
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setDragActive(true);
+  };
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+  };
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      setFiles(Array.from(e.dataTransfer.files));
+    }
+  };
+
   return (
-    <div className="message-input">
+    <div
+      className={`message-input${dragActive ? ' drag-active' : ''}`}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
       <button
         className="file-btn"
         onClick={() => document.getElementById('file-input').click()}
@@ -42,7 +65,7 @@ export default function MessageInput({ chatId }) {
         id="file-input"
         type="file"
         accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,audio/*"
-        style={{ display: 'none' }}
+        className="file-input"
         onChange={handleFileChange}
         multiple
       />
@@ -57,9 +80,12 @@ export default function MessageInput({ chatId }) {
             e.preventDefault();
             handleSend();
           }
+          if (e.key === 'Enter' && e.shiftKey) {
+            // Разрешаем перенос строки
+            return;
+          }
         }}
         rows={1}
-        style={{ minHeight: 36, maxHeight: 180 }}
       />
       <button
         className="emoji-btn"
@@ -70,7 +96,7 @@ export default function MessageInput({ chatId }) {
         <FaRegSmile />
       </button>
       {showEmoji && (
-        <div style={{ position: 'absolute', bottom: 60, right: 60, zIndex: 10 }}>
+        <div className="emoji-picker">
           <Picker data={data} onEmojiSelect={addEmoji} locale="ru" />
         </div>
       )}
@@ -84,7 +110,7 @@ export default function MessageInput({ chatId }) {
         <FaPaperPlane />
       </button>
       <button
-        style={{ marginLeft: 4, background: 'transparent', color: '#e67e22', border: 'none', borderRadius: '50%', width: 32, height: 32, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, cursor: 'pointer' }}
+        className="test-webhook-btn"
         onClick={() => alert('Проверка вебхука отправки файла')}
         title="Проверить вебхук отправки файла"
         disabled={sendMessage.isLoading || !chatId}
@@ -93,22 +119,22 @@ export default function MessageInput({ chatId }) {
         <FaSyncAlt />
       </button>
       {files && files.length > 0 && (
-        <div className="file-preview-list" style={{ marginTop: 8 }}>
+        <div className="file-preview-list">
           {files.map((f, i) => (
             <div key={i} className="file-preview-item">
               <b>Файл:</b> {f.name}
               {f.type.startsWith('image/') && (
-                <img src={URL.createObjectURL(f)} alt="preview" style={{ maxHeight: 80, marginLeft: 8 }} />
+                <img src={URL.createObjectURL(f)} alt="preview" className="file-preview-img" />
               )}
             </div>
           ))}
-          <button onClick={() => setFiles([])} style={{ marginLeft: 8 }}>Убрать все</button>
+          <button className="remove-all-files-btn" onClick={() => setFiles([])}>Убрать все</button>
         </div>
       )}
       {/* Кнопка для тестовой отправки файла с полем 'data' */}
       {chatId && files && files.length > 0 && (
         <button
-          style={{ marginTop: 8, background: '#e67e22', color: '#fff', border: 'none', borderRadius: 4, padding: '6px 12px', cursor: 'pointer' }}
+          className="test-send-file-btn"
           onClick={handleSendTestFile}
           disabled={sendMessage.isLoading}
           type="button"
@@ -116,6 +142,7 @@ export default function MessageInput({ chatId }) {
           Тест: отправить файл с полем data
         </button>
       )}
+      {dragActive && <div className="drag-overlay">Перетащите файл сюда</div>}
     </div>
   );
 } 
