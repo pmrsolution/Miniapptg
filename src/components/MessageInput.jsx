@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaRegSmile, FaPaperclip, FaPaperPlane, FaSyncAlt } from 'react-icons/fa';
+import { FaRegSmile, FaPaperclip, FaPaperPlane, FaMicrophone } from 'react-icons/fa';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { useSendMessage } from '../hooks/useSendMessage';
@@ -33,9 +33,6 @@ export default function MessageInput({ chatId }) {
     setNewMessage(prev => prev + emoji.native);
     setShowEmoji(false);
   };
-  const handleSendTestFile = () => {
-    alert('Тест: отправить файл с полем data');
-  };
 
   // Drag&Drop
   const handleDragOver = (e) => {
@@ -55,26 +52,10 @@ export default function MessageInput({ chatId }) {
   };
 
   return (
-    <>
-      <button
-        className="btn file-btn"
-        onClick={() => document.getElementById('file-input').click()}
-        title="Прикрепить файл или голосовое"
-        type="button"
-      >
-        <FaPaperclip />
-      </button>
-      <input
-        id="file-input"
-        type="file"
-        accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,audio/*"
-        style={{ display: 'none' }}
-        onChange={handleFileChange}
-        multiple
-      />
+    <form className="inputBox" onSubmit={e => { e.preventDefault(); handleSend(); }}>
       <textarea
         ref={textareaRef}
-        className="input-box"
+        className="inputBox-textarea"
         value={newMessage}
         onChange={e => setNewMessage(e.target.value)}
         placeholder="Введите сообщение..."
@@ -82,9 +63,6 @@ export default function MessageInput({ chatId }) {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSend();
-          }
-          if (e.key === 'Enter' && e.shiftKey) {
-            return;
           }
         }}
         rows={1}
@@ -95,52 +73,54 @@ export default function MessageInput({ chatId }) {
           }
         }}
       />
-      <button
-        className="btn emoji-btn"
-        onClick={() => setShowEmoji(!showEmoji)}
-        title="Смайлы"
-        type="button"
-      >
-        <FaRegSmile />
-      </button>
+      <div className="buttons">
+        <button
+          className="btn emoji-btn"
+          onClick={e => { e.preventDefault(); setShowEmoji(!showEmoji); }}
+          title="Смайлы"
+          type="button"
+        >
+          <FaRegSmile />
+        </button>
+        <button
+          className="btn file-btn"
+          onClick={e => { e.preventDefault(); document.getElementById('file-input').click(); }}
+          title="Прикрепить файл"
+          type="button"
+        >
+          <FaPaperclip />
+        </button>
+        <input
+          id="file-input"
+          type="file"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+          multiple
+        />
+        <button
+          className="btn voice-btn"
+          title="Голосовое сообщение"
+          type="button"
+          tabIndex={-1}
+        >
+          <FaMicrophone />
+        </button>
+        <button
+          onClick={handleSend}
+          disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
+          title="Отправить"
+          className="btn send-btn"
+          type="submit"
+        >
+          <FaPaperPlane />
+        </button>
+      </div>
       {showEmoji && (
         <div className="emoji-picker">
           <Picker data={data} onEmojiSelect={addEmoji} locale="ru" />
         </div>
       )}
-      <button
-        onClick={handleSend}
-        disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
-        title="Отправить"
-        className="btn send-btn"
-        type="button"
-      >
-        <FaPaperPlane />
-      </button>
-      {files && files.length > 0 && (
-        <div className="file-preview-list">
-          {files.map((f, i) => (
-            <div key={i} className="file-preview-item">
-              <b>Файл:</b> {f.name}
-              {f.type.startsWith('image/') && (
-                <img src={URL.createObjectURL(f)} alt="preview" className="file-preview-img" />
-              )}
-            </div>
-          ))}
-          <button className="btn" onClick={() => setFiles([])}>Убрать все</button>
-        </div>
-      )}
-      {chatId && files && files.length > 0 && (
-        <button
-          className="btn"
-          onClick={handleSendTestFile}
-          disabled={sendMessage.isLoading}
-          type="button"
-        >
-          Тест: отправить файл с полем data
-        </button>
-      )}
       {dragActive && <div className="drag-overlay">Перетащите файл сюда</div>}
-    </>
+    </form>
   );
 } 

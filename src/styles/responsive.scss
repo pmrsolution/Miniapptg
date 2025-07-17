@@ -1,0 +1,13 @@
+@media (max-width: 768px) {
+  .sidebar { position: fixed; inset: 0; z-index: 20; display: none; }
+  .sidebar.show { display: flex; }
+  .backBtn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--hover);
+    border-radius: 50%;
+  }
+} 

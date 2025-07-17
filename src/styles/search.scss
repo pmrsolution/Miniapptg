@@ -1,0 +1,31 @@
+.searchNav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+
+  button {
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    border-radius: 4px;
+    transition: background .15s;
+    &:hover       { background: var(--hover); }
+    &:disabled    { opacity: .4;               }
+  }
+  .count {
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+}
+
+.searchHighlight {
+  background: #ffff0050;
+} 

@@ -6,10 +6,8 @@ import { ChatProvider } from '../context/ChatContext';
 export default function Layout() {
   return (
     <ChatProvider>
-      <div className="main-content">
-        <Sidebar />
-        <Chat />
-      </div>
+      <Sidebar />
+      <Chat />
     </ChatProvider>
   );
 } 

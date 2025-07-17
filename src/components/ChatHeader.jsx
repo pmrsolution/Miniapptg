@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FaSearch, FaExpand } from 'react-icons/fa';
 import { Avatar } from './Avatar';
+import { useTheme } from '../context/ThemeContext';
 
 function ThemeToggle() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+  const { theme, toggleTheme } = useTheme();
   return (
-    <button className="btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} title="Сменить тему">
+    <button className="btn" onClick={toggleTheme} title="Сменить тему">
       {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   );
