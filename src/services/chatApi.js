@@ -15,9 +15,10 @@ export async function getChats() {
   return Array.isArray(data.output) ? data.output : Array.isArray(data) ? data : [];
 }
 
-export async function getMessages({ chat_id, limit = 50, before }) {
+export async function getMessages({ chat_id, limit = 50, before, search }) {
   const params = new URLSearchParams({ chat_id, limit });
   if (before) params.append('before', before);
+  if (search && search.length >= 2) params.append('search', search);
   const res = await fetch(`/api/messages?${params}`);
   if (!res.ok) throw new Error('Ошибка загрузки сообщений');
   const data = await res.json();
@@ -36,9 +37,4 @@ export async function sendMessage({ chat_id, text, file }) {
 
 export async function saveUserMessage({ chat_id, user_message }) {
   return fetcher(API_ENDPOINTS.save, { chat_id, user_message });
-}
-
-export async function searchMessages({ chat_id, q }) {
-  const ps = new URLSearchParams({ chat_id, q });
-  return fetch(`${API_ENDPOINTS.search}?${ps}`).then(r => r.json());
 } 
