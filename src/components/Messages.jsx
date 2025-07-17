@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
 import { useMessages } from '../hooks/useMessages';
 
 function MessageImage({ fileUrl, fileName }) {
@@ -46,20 +46,34 @@ function MessageImage({ fileUrl, fileName }) {
 
 export default function Messages({ chatId, search }) {
   const messagesEndRef = useRef(null);
+  const wrapperRef = useRef(null);
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useMessages(chatId, search);
   const messages = data?.pages?.flatMap(page => page) || [];
+  const [highlighted, setHighlighted] = useState([]);
 
+  // Подсветка найденных сообщений исчезает через 1.5 сек
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    if (search && search.length >= 2) {
+      const ids = messages
+        .filter(msg => msg.text && msg.text.toLowerCase().includes(search.toLowerCase()))
+        .map(msg => msg.time || msg.created_at);
+      setHighlighted(ids);
+      const timer = setTimeout(() => setHighlighted([]), 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [search, messages]);
+
+  // Скролл к самому низу
+  useLayoutEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTop = wrapperRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Подсветка найденных сообщений
-  const isHighlight = (msg) => search && search.length >= 2 && msg.text && msg.text.toLowerCase().includes(search.toLowerCase());
+  const isHighlight = (msg) => highlighted.includes(msg.time || msg.created_at);
 
   return (
-    <>
+    <div ref={wrapperRef} className="messages-wrapper" style={{height:'100%'}}>
       {isLoading && <div className="messages-loading">Загрузка...</div>}
       {isFetchingNextPage && (
         <div className="messages-fetching">Загрузка старых сообщений...</div>
@@ -83,7 +97,7 @@ export default function Messages({ chatId, search }) {
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
+              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId} style={{maxWidth:'95%'}}>
                 {msg.text && (<div>{msg.text}</div>)}
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (
@@ -106,6 +120,6 @@ export default function Messages({ chatId, search }) {
         });
       })()}
       <div ref={messagesEndRef} />
-    </>
+    </div>
   );
 } 

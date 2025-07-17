@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FaRegSmile, FaPaperclip, FaPaperPlane, FaSyncAlt } from 'react-icons/fa';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
@@ -11,6 +11,14 @@ export default function MessageInput({ chatId }) {
   const [dragActive, setDragActive] = useState(false);
   const textareaRef = useRef(null);
   const sendMessage = useSendMessage(chatId);
+
+  // Авто-рост textarea
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [newMessage]);
 
   const handleSend = () => {
     if (!chatId || sendMessage.isLoading || (!newMessage.trim() && !files.length)) return;
@@ -80,6 +88,12 @@ export default function MessageInput({ chatId }) {
           }
         }}
         rows={1}
+        onInput={() => {
+          if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+          }
+        }}
       />
       <button
         className="btn emoji-btn"

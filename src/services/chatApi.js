@@ -28,9 +28,9 @@ export async function getMessages({ chat_id, limit = 50, before, search }) {
 export async function sendMessage({ chat_id, text, file }) {
   if (!chat_id || (!text && !file)) throw new Error('Пустое сообщение или не выбран чат');
   const fd = new FormData();
-  fd.set('chat_id', chat_id);
-  if (text) fd.set('text', text);
-  if (file) fd.set('file', file);
+  fd.append('chat_id', chat_id);
+  if (text) fd.append('text', text);
+  if (file) fd.append('file', file);
   const res = await fetch('/api/send', { method: 'POST', body: fd });
   if (!res.ok) throw new Error('Ошибка отправки сообщения');
   return res.json();

@@ -41,6 +41,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    height: 100%;
     @media (max-width: 768px) {
       width: 100%;
       min-width: 100%;
@@ -74,6 +75,7 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
+    height: 100%;
   }
 
   .input-row {
@@ -117,8 +119,8 @@
     &.active { background: #2A3942; box-shadow: inset 0 1px 3px rgba(0,0,0,.1); }
 
     .avatar {
-      width: 52px;
-      height: 52px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -126,8 +128,8 @@
       font-size: 22px;
       font-weight: 600;
       color: #fff;
-      background: #29a6e3;
-      border: 1px solid var(--border);
+      background: #2296f3;
+      border: 2px solid #fff;
       user-select: none;
       flex-shrink: 0;
     }
@@ -138,7 +140,7 @@
 
   /* ====== Messages ====== */
   .bubble {
-    max-width: 80%;
+    max-width: 95%;
     padding: 16px 20px 26px 20px;
     font-size: 15px;
     line-height: 1.38;
@@ -223,20 +225,5 @@
   }
 
   /* ====== Светлая тема ====== */
-  [data-theme='light'] {
-    --bg-main: #f7f7f7;
-    --bg-sidebar: #fff;
-    --bg-secondary: #f0f0f0;
-    --accent: #2296f3;
-    --white: #222;
-    --grey: #888;
-    --border: #e0e0e0;
-    --bubble-user: #e3f1fd;
-    --bubble-bot: #fff;
-    color: #222;
-  }
-  [data-theme='light'] body, [data-theme='light'] html, [data-theme='light'] #root {
-    background: #f7f7f7;
-    color: #222;
-  }
+  [data-theme='light'] { display: none; }
 } 
