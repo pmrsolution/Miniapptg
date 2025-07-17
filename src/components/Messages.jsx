@@ -9,13 +9,22 @@ const messages = [
 
 export default function Messages() {
   return (
-    <Virtuoso
-      data={messages}
-      followOutput="smooth"
-      itemContent={(_, m) => (
-        <div className={`msg ${m.isBot ? 'from-bot' : ''}`}>{m.text}</div>
-      )}
-      style={{ height: '100%' }}
-    />
+    <div className="messages">
+      <Virtuoso
+        data={messages}
+        followOutput="smooth"
+        itemContent={(_, m) => (
+          <div className={`bubble ${m.isBot ? 'left' : 'right'}`}>
+            {m.text}
+            {m.fileUrl && (
+              <a href={m.fileUrl} target="_blank" rel="noreferrer">
+                📎 {m.fileName}
+              </a>
+            )}
+          </div>
+        )}
+        style={{ height: '100%' }}
+      />
+    </div>
   );
 } 
