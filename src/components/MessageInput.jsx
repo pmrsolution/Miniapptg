@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
-export default function MessageInput({ onSend }) {
-  const [text, setText] = useState('');
-  const fileRef = React.useRef();
+import React, { useState, useRef } from 'react';
 
-  const submit = () => {
-    if (!text.trim() && !fileRef.current.files.length) return;
-    onSend({ text, file: fileRef.current.files[0] });
+export default function MessageInput() {
+  const [text, setText] = useState('');
+  const fileRef = useRef();
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSend = () => {
+    if (!text.trim() && !file) return;
+    // Здесь будет отправка сообщения/файла
     setText('');
-    fileRef.current.value = '';
+    setFile(null);
+    if (fileRef.current) fileRef.current.value = '';
   };
 
   return (
-    <div className="input-row">
-      <input placeholder="Сообщение…" value={text} onChange={e => setText(e.target.value)} onKeyDown={e => e.key==='Enter' && submit()} />
-      <input type="file" ref={fileRef} accept="image/*,application/pdf" />
-      <button onClick={submit}>→</button>
+    <div className="message-input">
+      <input
+        type="text"
+        placeholder="Сообщение..."
+        value={text}
+        onChange={e => setText(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && handleSend()}
+      />
+      <input type="file" ref={fileRef} onChange={handleFileChange} style={{ display: 'none' }} />
+      <button className="file-btn" onClick={() => fileRef.current && fileRef.current.click()}>📎</button>
+      <button className="send-btn" onClick={handleSend} disabled={!text.trim() && !file}>➤</button>
+      {/* Предпросмотр файла */}
+      {file && (
+        <div className="file-preview">
+          <span>{file.name}</span>
+          <button onClick={() => setFile(null)}>✕</button>
+        </div>
+      )}
     </div>
   );
 } 

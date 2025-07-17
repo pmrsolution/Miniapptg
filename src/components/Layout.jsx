@@ -3,11 +3,11 @@ import Sidebar from './Sidebar';
 import Chat from './Chat';
 
 export default function Layout() {
-  const [selectedChat, setSelectedChat] = useState(null);
+  // selectedChat не используется, так как Chat и Messages сейчас с заглушками
   return (
-    <div className="layout">
-      <Sidebar selectedChat={selectedChat} setSelectedChat={setSelectedChat} />
-      {selectedChat && <Chat chatId={selectedChat} />}
+    <div className="main-content">
+      <Sidebar />
+      <Chat />
     </div>
   );
 } 

@@ -1,17 +1,18 @@
 import React from 'react';
 import Messages from './Messages';
 import MessageInput from './MessageInput';
-import { useMessages } from '../hooks/useMessages';
-import { useSendMessage } from '../hooks/useSendMessage';
 
-export default function Chat({ chatId }) {
-  const messagesQuery = useMessages(chatId);
-  const sendMutation  = useSendMessage(chatId);
+// Временная заглушка выбранного чата
+const selectedChat = { chat_id: '1', first_name: 'Alice' };
 
+export default function Chat() {
   return (
-    <section className="chat">
-      <Messages messages={messagesQuery} />
-      <MessageInput onSend={sendMutation.mutate} />
-    </section>
+    <div className="chat-area">
+      <div className="chat-header-bar">
+        <div className="chat-header-title">{selectedChat.first_name}</div>
+      </div>
+      <Messages />
+      <MessageInput />
+    </div>
   );
 } 
