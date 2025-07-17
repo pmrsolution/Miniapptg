@@ -1,31 +1,46 @@
 import React, { useState } from 'react';
-import useChats from '../hooks/useChats';
+import { FaSearch } from 'react-icons/fa';
 import { Avatar } from './Avatar';
 
-export default function Sidebar({ selectedChat, setSelectedChat }) {
+// Временная заглушка чатов для визуального теста
+const chats = [
+  { chat_id: '1', first_name: 'Alice', last_message: 'Привет!' },
+  { chat_id: '2', first_name: 'Bob', last_message: 'Как дела?' },
+  { chat_id: '3', first_name: 'Charlie', last_message: 'Добро пожаловать!' }
+];
+
+export default function Sidebar() {
   const [search, setSearch] = useState('');
-  const { data: chats = [], isLoading, error } = useChats();
-  const list = chats.output || chats || [];
-  const filtered = list.filter(ch => ch.first_name?.toLowerCase().includes(search.toLowerCase()));
+  const [selected, setSelected] = useState('1');
+  const filtered = chats.filter(ch => ch.first_name.toLowerCase().includes(search.toLowerCase()));
+
   return (
     <aside className="sidebar">
-      <input
-        placeholder="Поиск…"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
+      <div className="sidebar-search-row">
+        <span className="sidebar-search-icon"><FaSearch /></span>
+        <input
+          className="sidebar-search-input"
+          placeholder="Поиск..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+        />
+        {search && (
+          <button className="sidebar-search-clear" onClick={() => setSearch('')}>×</button>
+        )}
+      </div>
       <div className="chat-list">
-        {isLoading && <div>Загрузка...</div>}
-        {error && <div>Ошибка загрузки чатов</div>}
         {filtered.map(ch => (
-          <button
+          <div
             key={ch.chat_id}
-            className={`chat-item ${selectedChat === ch.chat_id ? 'selected' : ''}`}
-            onClick={() => setSelectedChat(ch.chat_id)}
+            className={`chat-item${selected === ch.chat_id ? ' selected' : ''}`}
+            onClick={() => setSelected(ch.chat_id)}
           >
-            <Avatar letter={ch.first_name?.[0]} />
-            <span>{ch.first_name}</span>
-          </button>
+            <span className="chat-avatar"><Avatar letter={ch.first_name[0]} /></span>
+            <div className="chat-info">
+              <div className="chat-name">{ch.first_name}</div>
+              <div className="chat-last-message">{ch.last_message}</div>
+            </div>
+          </div>
         ))}
       </div>
     </aside>
