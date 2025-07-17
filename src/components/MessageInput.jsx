@@ -18,7 +18,7 @@ export default function MessageInput() {
   };
 
   return (
-    <div className="message-input">
+    <div className="chat-input">
       <button className="file-btn" onClick={() => fileRef.current && fileRef.current.click()}><FaPaperclip /></button>
       <input
         type="file"
@@ -26,13 +26,14 @@ export default function MessageInput() {
         onChange={handleFileChange}
         style={{ display: 'none' }}
       />
-      <input
-        className="message-textarea"
-        type="text"
-        placeholder="Введите сообщение..."
+      <textarea
+        rows={1}
+        placeholder="Type a message…"
         value={text}
         onChange={e => setText(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && handleSend()}
+        onKeyDown={e => {
+          if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+        }}
       />
       <button className="send-btn" onClick={handleSend} disabled={!text.trim() && !file}><FaPaperPlane /></button>
       {file && (
