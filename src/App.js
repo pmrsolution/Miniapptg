@@ -1,10 +1,12 @@
 import React from 'react';
-import Layout from './components/Layout';
+import Sidebar from './components/Sidebar';
+import Chat from './components/Chat';
 
 export default function App() {
   return (
     <div className="app">
-      <Layout />
+      <Sidebar />
+      <Chat />
     </div>
   );
 } 

@@ -47,14 +47,9 @@ export default function MessageInput({ chatId }) {
   };
 
   return (
-    <div
-      className={`message-input${dragActive ? ' drag-active' : ''}`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
+    <>
       <button
-        className="file-btn"
+        className="btn file-btn"
         onClick={() => document.getElementById('file-input').click()}
         title="Прикрепить файл или голосовое"
         type="button"
@@ -65,13 +60,13 @@ export default function MessageInput({ chatId }) {
         id="file-input"
         type="file"
         accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,audio/*"
-        className="file-input"
+        style={{ display: 'none' }}
         onChange={handleFileChange}
         multiple
       />
       <textarea
         ref={textareaRef}
-        className="message-textarea"
+        className="input-box"
         value={newMessage}
         onChange={e => setNewMessage(e.target.value)}
         placeholder="Введите сообщение..."
@@ -81,14 +76,13 @@ export default function MessageInput({ chatId }) {
             handleSend();
           }
           if (e.key === 'Enter' && e.shiftKey) {
-            // Разрешаем перенос строки
             return;
           }
         }}
         rows={1}
       />
       <button
-        className="emoji-btn"
+        className="btn emoji-btn"
         onClick={() => setShowEmoji(!showEmoji)}
         title="Смайлы"
         type="button"
@@ -104,13 +98,13 @@ export default function MessageInput({ chatId }) {
         onClick={handleSend}
         disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
         title="Отправить"
-        className="send-btn"
+        className="btn send-btn"
         type="button"
       >
         <FaPaperPlane />
       </button>
       <button
-        className="test-webhook-btn"
+        className="btn"
         onClick={() => alert('Проверка вебхука отправки файла')}
         title="Проверить вебхук отправки файла"
         disabled={sendMessage.isLoading || !chatId}
@@ -128,13 +122,12 @@ export default function MessageInput({ chatId }) {
               )}
             </div>
           ))}
-          <button className="remove-all-files-btn" onClick={() => setFiles([])}>Убрать все</button>
+          <button className="btn" onClick={() => setFiles([])}>Убрать все</button>
         </div>
       )}
-      {/* Кнопка для тестовой отправки файла с полем 'data' */}
       {chatId && files && files.length > 0 && (
         <button
-          className="test-send-file-btn"
+          className="btn"
           onClick={handleSendTestFile}
           disabled={sendMessage.isLoading}
           type="button"
@@ -143,6 +136,6 @@ export default function MessageInput({ chatId }) {
         </button>
       )}
       {dragActive && <div className="drag-overlay">Перетащите файл сюда</div>}
-    </div>
+    </>
   );
 } 
