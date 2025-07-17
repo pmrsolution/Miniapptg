@@ -24,10 +24,10 @@ export default function Messages() {
               )}
               <div className={`message-bubble ${msg.from}`}> 
                 <div className="message-avatar">
-                  <Avatar letter={msg.first_name[0]} />
+                  <Avatar letter={msg.from === 'user' ? 'Я' : 'Б'} />
                 </div>
                 <div className="message-content">
-                  {msg.text}
+                  <div className="message-text">{msg.text}</div>
                   <div className="message-time">{msg.time}</div>
                 </div>
               </div>
