@@ -27,7 +27,7 @@ export default function Sidebar() {
           <div
             key={chat.chat_id}
             className={`chat-item${selectedChatId === chat.chat_id ? ' active' : ''}`}
-            onClick={() => setSelectedChatId(chat.chat_id)}
+            onClick={() => { setSelectedChatId(chat.chat_id); setSearch(''); }}
           >
             <Avatar letter={chat.first_name?.[0]?.toUpperCase() || '?'} />
             <div className="info">

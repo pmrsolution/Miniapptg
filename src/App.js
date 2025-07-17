@@ -7,8 +7,12 @@ export default function App() {
   return (
     <div className="app">
       <ChatProvider>
-        <Sidebar />
-        <Chat />
+        <aside className="sidebar">
+          <Sidebar />
+        </aside>
+        <main className="chat">
+          <Chat />
+        </main>
       </ChatProvider>
     </div>
   );

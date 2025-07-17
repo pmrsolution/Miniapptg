@@ -78,6 +78,7 @@ export default function MessageInput({ chatId }) {
         value={newMessage}
         onChange={e => setNewMessage(e.target.value)}
         placeholder="Введите сообщение..."
+        style={{'--placeholder-color': 'var(--textMeta)'}}
         onKeyDown={e => {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();

@@ -3,17 +3,17 @@ export function Avatar({ letter }) {
     <span
       className="avatar"
       style={{
-        width: 44,
-        height: 44,
+        width: 52,
+        height: 52,
         borderRadius: '50%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         fontSize: 22,
         fontWeight: 600,
-        color: '#fff',
-        background: '#2296f3',
-        border: '2px solid #fff',
+        color: 'var(--text)',
+        background: 'var(--bubbleUser)',
+        border: '2px solid var(--border)',
         userSelect: 'none',
         flexShrink: 0
       }}
