@@ -1,0 +1,31 @@
+@layer base {
+  /* html[data-theme="light"] */
+  :root[data-theme="light"]{
+    --bg: #ffffff;
+    --sidebar-bg: #fbfcfd;
+    --chat-bg: #ededed;
+    --bubble-user: #00A884;
+    --bubble-bot: #ffffff;
+    --text-primary: #000000;
+    --text-secondary: #667781;
+    --border: #CFD8DC;
+    --hover: rgba(0,0,0,.04);
+    --active: rgba(0,0,0,.08);
+    --avatar-border: #667781;
+  }
+
+  /* html[data-theme="dark"] */
+  :root[data-theme="dark"]{
+    --bg: #0B141A;
+    --sidebar-bg: #111B21;
+    --chat-bg: #0B141A;
+    --bubble-user: #005C4B;
+    --bubble-bot: #202C33;
+    --text-primary: #E9EDEF;
+    --text-secondary: #8696A0;
+    --border: #2A3942;
+    --hover: rgba(255,255,255,.04);
+    --active: rgba(255,255,255,.08);
+    --avatar-border: #2A3942;
+  }
+} 

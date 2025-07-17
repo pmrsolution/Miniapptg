@@ -12,13 +12,12 @@ export default function Sidebar() {
       )
     : chats;
   return (
-    <div className={`sidebar${search.length >= 2 ? ' searching' : ''}`} style={{ position: 'relative' }}>
+    <div className={`sidebar${search.length >= 2 ? ' searching' : ''}`}>
       <input
         className="chat-search"
         placeholder="Поиск по чатам..."
         value={search}
         onChange={e => setSearch(e.target.value)}
-        style={{ zIndex: 2 }}
       />
       <div>
         {isLoading && <div className="chat-loading">Загрузка...</div>}

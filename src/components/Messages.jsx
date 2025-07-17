@@ -74,9 +74,9 @@ export default function Messages({ chatId, search }) {
 
   return (
     <div ref={wrapperRef} className="messages-wrapper" style={{height:'100%'}}>
-      {isLoading && <div className="messages-loading">Загрузка...</div>}
+      {isLoading && <div className="typingIndicator">Загрузка...</div>}
       {isFetchingNextPage && (
-        <div className="messages-fetching">Загрузка старых сообщений...</div>
+        <div className="typingIndicator">Загрузка старых сообщений...</div>
       )}
       {!hasNextPage && messages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
@@ -97,7 +97,7 @@ export default function Messages({ chatId, search }) {
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId} style={{maxWidth:'95%'}}>
+              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
                 {msg.text && (<div>{msg.text}</div>)}
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (

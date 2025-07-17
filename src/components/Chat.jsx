@@ -5,7 +5,7 @@ import { useChatContext } from '../context/ChatContext';
 import ChatHeader from './ChatHeader';
 
 export default function Chat() {
-  const { selectedChat, selectedChatId } = useChatContext();
+  const { selectedChat, selectedChatId, setSelectedChatId } = useChatContext();
   const [showChatSearch, setShowChatSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -16,6 +16,7 @@ export default function Chat() {
   }
 
   const handleFullscreen = () => setIsFullscreen(f => !f);
+  const handleBack = () => setSelectedChatId(null);
 
   return (
     <div className="chat">
@@ -28,7 +29,7 @@ export default function Chat() {
           handleFullscreen={handleFullscreen}
           showDebugMenu={showDebugMenu}
           setShowDebugMenu={setShowDebugMenu}
-          onBack={() => {}}
+          onBack={handleBack}
         />
       </div>
       {showChatSearch && (

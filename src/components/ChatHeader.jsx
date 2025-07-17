@@ -26,9 +26,12 @@ export default function ChatHeader({
   onBack
 }) {
   if (!selectedChat) return null;
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   return (
     <>
-      <button className="btn back-btn" onClick={onBack} title="Назад">&larr;</button>
+      {isMobile && (
+        <button className="btn back-btn" onClick={onBack} title="Назад">&larr;</button>
+      )}
       <Avatar letter={selectedChat.first_name?.[0]?.toUpperCase() || '?'} />
       <span className="name">{selectedChat.first_name || 'Диалог с пользователем'}</span>
       <div style={{ flex: 1 }} />
