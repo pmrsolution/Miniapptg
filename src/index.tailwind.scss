@@ -225,5 +225,15 @@
   }
 
   /* ====== Светлая тема ====== */
-  [data-theme='light'] { display: none; }
+  [data-theme='light'] {
+    --bg-main: #f7f7f7;
+    --bg-sidebar: #fff;
+    --bg-secondary: #f0f0f0;
+    --accent: #2296f3;
+    --white: #222;
+    --grey: #8696A0;
+    --border: #e0e0e0;
+    --bubble-user: #e3f1fd;
+    --bubble-bot: #fff;
+  }
 } 

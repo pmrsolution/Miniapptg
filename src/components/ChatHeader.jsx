@@ -3,7 +3,7 @@ import { FaSearch, FaExpand } from 'react-icons/fa';
 import { Avatar } from './Avatar';
 
 function ThemeToggle() {
-  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
