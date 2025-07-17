@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { FaPaperclip, FaPaperPlane } from 'react-icons/fa';
 
 export default function MessageInput() {
   const [text, setText] = useState('');
@@ -11,7 +12,6 @@ export default function MessageInput() {
 
   const handleSend = () => {
     if (!text.trim() && !file) return;
-    // Здесь будет отправка сообщения/файла
     setText('');
     setFile(null);
     if (fileRef.current) fileRef.current.value = '';
@@ -19,17 +19,22 @@ export default function MessageInput() {
 
   return (
     <div className="message-input">
+      <button className="file-btn" onClick={() => fileRef.current && fileRef.current.click()}><FaPaperclip /></button>
       <input
+        type="file"
+        ref={fileRef}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+      />
+      <input
+        className="message-textarea"
         type="text"
-        placeholder="Сообщение..."
+        placeholder="Введите сообщение..."
         value={text}
         onChange={e => setText(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && handleSend()}
       />
-      <input type="file" ref={fileRef} onChange={handleFileChange} style={{ display: 'none' }} />
-      <button className="file-btn" onClick={() => fileRef.current && fileRef.current.click()}>📎</button>
-      <button className="send-btn" onClick={handleSend} disabled={!text.trim() && !file}>➤</button>
-      {/* Предпросмотр файла */}
+      <button className="send-btn" onClick={handleSend} disabled={!text.trim() && !file}><FaPaperPlane /></button>
       {file && (
         <div className="file-preview">
           <span>{file.name}</span>
