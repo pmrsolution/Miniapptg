@@ -76,12 +76,11 @@ export default function Messages({ chatId, search }) {
     }
   }, [searchIdx, searchTerm, messages]);
 
-  // Скролл к самому низу при новых сообщениях
-  useLayoutEffect(() => {
-    if (!searchTerm && wrapperRef.current) {
-      wrapperRef.current.scrollTop = wrapperRef.current.scrollHeight;
-    }
-  }, [messages, searchTerm]);
+  // Скролл к самому низу при новых сообщениях или смене чата
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [messages.length, chatId]);
 
   const isHighlight = (msg) => highlighted.includes(msg.time || msg.created_at);
 
