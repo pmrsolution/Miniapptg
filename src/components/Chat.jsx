@@ -49,7 +49,7 @@ export default function Chat() {
         </div>
       )}
       <div className="messages-wrapper">
-        <Messages chatId={selectedChatId} search={searchQuery.length >= 2 ? searchQuery : ''} />
+        <Messages chatId={selectedChatId} search={searchQuery.length >= 2 ? searchQuery : ''} showChatSearch={showChatSearch} setShowChatSearch={setShowChatSearch} />
       </div>
       <div className="input-row">
         <MessageInput chatId={selectedChatId} />

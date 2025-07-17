@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useMessages } from '../hooks/useMessages';
 
 function MessageImage({ fileUrl, fileName }) {
@@ -48,10 +48,9 @@ function escapeRegExp(t) {
   return t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-export default function Messages({ chatId, search }) {
-  const messagesEndRef = useRef(null);
+export default function Messages({ chatId, search, showChatSearch, setShowChatSearch }) {
   const wrapperRef = useRef(null);
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useMessages(chatId, search);
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } = useMessages(chatId, search);
   const messages = data?.pages?.flatMap(page => page) || [];
   const [highlighted, setHighlighted] = useState([]);
   const [searchIdx, setSearchIdx] = useState(0);
@@ -82,10 +81,35 @@ export default function Messages({ chatId, search }) {
     if (el) el.scrollTop = el.scrollHeight;
   }, [messages.length, chatId]);
 
+  // Подгрузка сообщений при скролле вверх
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop < 50 && hasNextPage && !isFetchingNextPage) {
+        fetchNextPage();
+      }
+    };
+    el.addEventListener('scroll', handleScroll);
+    return () => el.removeEventListener('scroll', handleScroll);
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // Закрытие поиска по Esc
+  useEffect(() => {
+    if (!showChatSearch || !setShowChatSearch) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setShowChatSearch(false);
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showChatSearch, setShowChatSearch]);
+
   const isHighlight = (msg) => highlighted.includes(msg.time || msg.created_at);
 
   return (
     <div ref={wrapperRef} className="messages-wrapper">
+      {/* Top skeleton loader */}
+      {isFetchingNextPage && <div className="topSkeleton" />}
       {/* SearchNavigation */}
       {searchTerm && searchResults.length > 0 && (
         <div className="searchNav">
@@ -96,9 +120,6 @@ export default function Messages({ chatId, search }) {
       )}
       {/* Skeleton loader */}
       {isLoading && <div className="skeleton" />}
-      {isFetchingNextPage && (
-        <div className="typingIndicator">Загрузка старых сообщений...</div>
-      )}
       {!hasNextPage && messages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
       )}
@@ -126,7 +147,7 @@ export default function Messages({ chatId, search }) {
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
+              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId} style={{ position: 'relative' }}>
                 {msg.text && (<span className="searchable" dangerouslySetInnerHTML={{__html: textHtml}} />)}
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (
@@ -142,13 +163,12 @@ export default function Messages({ chatId, search }) {
                     </a>
                   )
                 )}
-                <span className="message-time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
+                <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
               </div>
             </React.Fragment>
           );
         });
       })()}
-      <div ref={messagesEndRef} />
     </div>
   );
 } 
