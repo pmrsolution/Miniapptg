@@ -103,15 +103,6 @@ export default function MessageInput({ chatId }) {
       >
         <FaPaperPlane />
       </button>
-      <button
-        className="btn"
-        onClick={() => alert('Проверка вебхука отправки файла')}
-        title="Проверить вебхук отправки файла"
-        disabled={sendMessage.isLoading || !chatId}
-        type="button"
-      >
-        <FaSyncAlt />
-      </button>
       {files && files.length > 0 && (
         <div className="file-preview-list">
           {files.map((f, i) => (

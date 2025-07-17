@@ -51,9 +51,12 @@ export default function Messages({ chatId, search }) {
 
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
     }
   }, [messages]);
+
+  // Подсветка найденных сообщений
+  const isHighlight = (msg) => search && search.length >= 2 && msg.text && msg.text.toLowerCase().includes(search.toLowerCase());
 
   return (
     <>
@@ -63,6 +66,9 @@ export default function Messages({ chatId, search }) {
       )}
       {!hasNextPage && messages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
+      )}
+      {messages.length === 0 && !isLoading && (
+        <div className="date-separator">Не найдено</div>
       )}
       {(() => {
         let lastDate = null;
@@ -77,7 +83,7 @@ export default function Messages({ chatId, search }) {
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}`} data-message-id={messageId}>
+              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
                 {msg.text && (<div>{msg.text}</div>)}
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (

@@ -32,14 +32,21 @@ export default function Chat() {
         />
       </div>
       {showChatSearch && (
-        <div style={{padding: '8px 20px', background: 'var(--bg-secondary)'}}>
+        <div style={{padding: '8px 20px', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', gap: 8}}>
           <input
             className="chat-search"
             placeholder="Поиск по сообщениям..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             autoFocus
+            style={{flex: 1}}
           />
+          <button
+            className="btn"
+            title="Закрыть поиск"
+            onClick={() => { setShowChatSearch(false); setSearchQuery(''); }}
+            style={{marginLeft: 4}}
+          >✕</button>
         </div>
       )}
       <div className="messages-wrapper">

@@ -1,19 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useChatContext } from '../context/ChatContext';
 import { Avatar } from './Avatar';
 
 export default function Sidebar() {
   const { chats, selectedChatId, setSelectedChatId, isLoading } = useChatContext();
+  const [search, setSearch] = useState('');
+  const filteredChats = search.length >= 2
+    ? chats.filter(chat =>
+        (chat.first_name && chat.first_name.toLowerCase().includes(search.toLowerCase())) ||
+        (chat.last_message && chat.last_message.toLowerCase().includes(search.toLowerCase()))
+      )
+    : chats;
   return (
-    <div className="sidebar">
+    <div className={`sidebar${search.length >= 2 ? ' searching' : ''}`} style={{ position: 'relative' }}>
       <input
         className="chat-search"
-        placeholder="Поиск..."
+        placeholder="Поиск по чатам..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        style={{ zIndex: 2 }}
       />
       <div>
         {isLoading && <div className="chat-loading">Загрузка...</div>}
-        {chats.length === 0 && !isLoading && <div className="chat-empty">Нет чатов</div>}
-        {chats.map(chat => (
+        {filteredChats.length === 0 && !isLoading && <div className="chat-empty">Не найдено</div>}
+        {filteredChats.map(chat => (
           <div
             key={chat.chat_id}
             className={`chat-item${selectedChatId === chat.chat_id ? ' active' : ''}`}
