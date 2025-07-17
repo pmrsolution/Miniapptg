@@ -44,9 +44,9 @@ function MessageImage({ fileUrl, fileName }) {
   return <img src={actualImageUrl} alt={fileName||'image'} className="message-img" onError={()=>setImageError(true)} onClick={()=>window.open(actualImageUrl,'_blank')} />;
 }
 
-export default function Messages({ chatId }) {
+export default function Messages({ chatId, search }) {
   const messagesEndRef = useRef(null);
-  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useMessages(chatId);
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useMessages(chatId, search);
   const messages = data?.pages?.flatMap(page => page) || [];
 
   useEffect(() => {

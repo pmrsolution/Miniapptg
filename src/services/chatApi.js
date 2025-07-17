@@ -26,6 +26,7 @@ export async function getMessages({ chat_id, limit = 50, before, search }) {
 }
 
 export async function sendMessage({ chat_id, text, file }) {
+  if (!chat_id || (!text && !file)) throw new Error('Пустое сообщение или не выбран чат');
   const fd = new FormData();
   fd.set('chat_id', chat_id);
   if (text) fd.set('text', text);

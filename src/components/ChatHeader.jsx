@@ -1,5 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch, FaExpand } from 'react-icons/fa';
+import { Avatar } from './Avatar';
+
+function ThemeToggle() {
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+  return (
+    <button className="btn" onClick={() => setTheme(t => t === 'dark' ? 'light' : 'dark')} title="Сменить тему">
+      {theme === 'dark' ? '☀️' : '🌙'}
+    </button>
+  );
+}
 
 export default function ChatHeader({
   selectedChat,
@@ -15,12 +29,13 @@ export default function ChatHeader({
   return (
     <>
       <button className="btn back-btn" onClick={onBack} title="Назад">&larr;</button>
-      <div className="avatar">{selectedChat.first_name?.[0]?.toUpperCase() || '?'}</div>
+      <Avatar letter={selectedChat.first_name?.[0]?.toUpperCase() || '?'} />
       <span className="name">{selectedChat.first_name || 'Диалог с пользователем'}</span>
       <div style={{ flex: 1 }} />
       <button className="btn" onClick={() => setShowChatSearch(s => !s)} title="Поиск"><FaSearch /></button>
       <button className="btn" onClick={handleFullscreen} title={isFullscreen ? 'Свернуть' : 'На весь экран'}><FaExpand /></button>
       <button className="btn settings-btn" onClick={() => setShowDebugMenu(!showDebugMenu)} title="Меню отладки">⚙️</button>
+      <ThemeToggle />
     </>
   );
 } 
