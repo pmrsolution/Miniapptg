@@ -15,13 +15,15 @@ export default function Sidebar() {
         {chats.map(chat => (
           <div
             key={chat.chat_id}
-            className={`chat-item ${activeId === chat.chat_id ? 'active' : ''}`}
+            className={`chat-item${activeId === chat.chat_id ? ' selected' : ''}`}
             onClick={() => setActiveId(chat.chat_id)}
           >
-            <img src={chat.photo_url || undefined} alt="" className="avatar" />
-            <div className="info">
-              <div className="name">{chat.first_name}</div>
-              <div className="snippet">{chat.last_message}</div>
+            <div className="chat-avatar">
+              {chat.first_name ? chat.first_name[0] : '?'}
+            </div>
+            <div className="chat-info">
+              <div className="chat-name">{chat.first_name}</div>
+              <div className="chat-last-message">{chat.last_message}</div>
             </div>
           </div>
         ))}
