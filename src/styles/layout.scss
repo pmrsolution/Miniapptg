@@ -196,14 +196,27 @@
 
 .bubble {
   position: relative;
+  max-width: 66%;
+  padding: 8px 12px;
+  border-radius: 16px;
+}
+.bubble.user {
+  border-radius: 16px 16px 4px 16px;
+  background: var(--bubble-user);
+  margin-left: auto;
+}
+.bubble.bot {
+  border-radius: 16px 16px 16px 4px;
+  background: var(--bubble-bot);
+  margin-right: auto;
 }
 .time {
   position: absolute;
-  bottom: 4px;
   right: 8px;
+  bottom: 4px;
   font-size: 12px;
+  opacity: .7;
   color: var(--text-secondary);
-  opacity: 0.8;
 }
 .topSkeleton {
   margin-top: 4px;

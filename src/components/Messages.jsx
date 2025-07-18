@@ -108,7 +108,6 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
 
   return (
     <div ref={wrapperRef} className="messages-wrapper">
-      {/* Top skeleton loader */}
       {isFetchingNextPage && <div className="topSkeleton" />}
       {/* SearchNavigation */}
       {searchTerm && searchResults.length > 0 && (
