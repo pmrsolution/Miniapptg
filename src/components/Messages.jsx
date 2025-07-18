@@ -50,6 +50,8 @@ function escapeRegExp(t) {
 
 export default function Messages({ chatId, search, showChatSearch, setShowChatSearch }) {
   const wrapperRef = useRef(null);
+  const messagesEndRef = useRef(null);
+  const lastDateRef = useRef(null);
   const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage, isFetching } = useMessages(chatId, search);
   const messages = data?.pages?.flatMap(page => page) || [];
   const [highlighted, setHighlighted] = useState([]);
@@ -74,6 +76,11 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
       setHighlighted([]);
     }
   }, [searchIdx, searchTerm, messages]);
+
+  // Скролл к последнему сообщению после рендера
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages.length]);
 
   // Скролл к самому низу при новых сообщениях или смене чата
   useEffect(() => {
@@ -130,7 +137,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
         return messages.map((msg, index) => {
           const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
           const showDate = msgDate && msgDate !== lastDate;
-          lastDate = msgDate;
+          if (showDate) lastDate = msgDate;
           const messageId = msg.time || msg.created_at;
           const isUser = msg.from === 'user';
           // Highlight search
@@ -146,8 +153,8 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId} style={{ position: 'relative' }}>
-                {msg.text && (<span className="searchable" dangerouslySetInnerHTML={{__html: textHtml}} />)}
+              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
+                <span className="searchable" style={{ paddingRight: 40 }} dangerouslySetInnerHTML={{__html: textHtml}} />
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (
                     <MessageImage fileUrl={msg.file_url} fileName={msg.file_name} />
@@ -168,6 +175,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
           );
         });
       })()}
+      <div ref={messagesEndRef} />
     </div>
   );
 } 
