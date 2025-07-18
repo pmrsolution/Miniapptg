@@ -79,7 +79,9 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
 
   // Скролл к последнему сообщению после рендера
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    requestAnimationFrame(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    });
   }, [messages.length]);
 
   // Скролл к самому низу при новых сообщениях или смене чата
@@ -115,16 +117,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
 
   return (
     <div ref={wrapperRef} className="messages-wrapper">
-      {isFetchingNextPage && <div className="topSkeleton" />}
-      {/* SearchNavigation */}
-      {searchTerm && searchResults.length > 0 && (
-        <div className="searchNav">
-          <button onClick={() => setSearchIdx(i => Math.max(i - 1, 0))} disabled={searchIdx === 0}>↑</button>
-          <span className="count">{searchIdx + 1} / {searchResults.length}</span>
-          <button onClick={() => setSearchIdx(i => Math.min(i + 1, searchResults.length - 1))} disabled={searchIdx === searchResults.length - 1}>↓</button>
-        </div>
-      )}
-      {/* Skeleton loader */}
+      {/* Skeleton loader только при isLoading */}
       {isLoading && <div className="skeleton" />}
       {!hasNextPage && messages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
@@ -140,12 +133,11 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
           if (showDate) lastDate = msgDate;
           const messageId = msg.time || msg.created_at;
           const isUser = msg.from === 'user';
-          // Highlight search
           let textHtml = msg.text;
           if (searchTerm && msg.text) {
             textHtml = msg.text.replace(
               new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi'),
-              '<mark class="searchHighlight">$1</mark>'
+              '<mark className="searchHighlight">$1</mark>'
             );
           }
           return (
@@ -154,7 +146,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
               <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
-                <span className="searchable" style={{ paddingRight: 40 }} dangerouslySetInnerHTML={{__html: textHtml}} />
+                <span className="searchable" style={{ paddingRight: 48, margin: '0 40px 4px 0', lineHeight: 1.28 }} dangerouslySetInnerHTML={{__html: textHtml}} />
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (
                     <MessageImage fileUrl={msg.file_url} fileName={msg.file_name} />
@@ -169,7 +161,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
                     </a>
                   )
                 )}
-                <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
+                <span className="time" style={{ position: 'absolute', bottom: 4, right: 8, fontSize: 12, opacity: .7, color: 'var(--text-secondary)' }}>{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
               </div>
             </React.Fragment>
           );
