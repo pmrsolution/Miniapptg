@@ -245,7 +245,7 @@
   font-weight: 600;
 } 
 
-.bubbleWrapper {
+.bubbleList, .messages-wrapper {
   display: flex;
   flex-direction: column;
   gap: var(--bubble-gap);
@@ -264,16 +264,16 @@
   margin: 0 !important;
 }
 .bubbleClient {
+  align-self: flex-end;
   background: var(--bubble-user-bg);
   border-radius: var(--bubble-user-br);
   color: #fff;
-  align-self: flex-end;
 }
 .bubbleAdmin {
+  align-self: flex-start;
   background: var(--bubble-admin-bg);
   border-radius: var(--bubble-admin-br);
   color: #fff;
-  align-self: flex-start;
 }
 .time {
   position: absolute;
