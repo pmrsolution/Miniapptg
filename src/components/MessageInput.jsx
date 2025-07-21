@@ -53,6 +53,16 @@ export default function MessageInput({ chatId }) {
 
   return (
     <form className="inputBox" onSubmit={e => { e.preventDefault(); handleSend(); }}>
+      <label className="clip-area" role="button" htmlFor="file-input">
+        <FaPaperclip />
+        <input
+          id="file-input"
+          type="file"
+          style={{ display: 'none' }}
+          onChange={handleFileChange}
+          multiple
+        />
+      </label>
       <textarea
         ref={textareaRef}
         className="inputBox-textarea"
@@ -73,48 +83,15 @@ export default function MessageInput({ chatId }) {
           }
         }}
       />
-      <div className="buttons">
-        <button
-          className="btn emoji-btn"
-          onClick={e => { e.preventDefault(); setShowEmoji(!showEmoji); }}
-          title="Смайлы"
-          type="button"
-        >
-          <FaRegSmile />
-        </button>
-        <button
-          className="btn file-btn"
-          onClick={e => { e.preventDefault(); document.getElementById('file-input').click(); }}
-          title="Прикрепить файл"
-          type="button"
-        >
-          <FaPaperclip />
-        </button>
-        <input
-          id="file-input"
-          type="file"
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-          multiple
-        />
-        <button
-          className="btn voice-btn"
-          title="Голосовое сообщение"
-          type="button"
-          tabIndex={-1}
-        >
-          <FaMicrophone />
-        </button>
-        <button
-          onClick={handleSend}
-          disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
-          title="Отправить"
-          className="btn send-btn"
-          type="submit"
-        >
-          <FaPaperPlane />
-        </button>
-      </div>
+      <button
+        onClick={handleSend}
+        disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
+        title="Отправить"
+        className="btn send-btn"
+        type="submit"
+      >
+        <FaPaperPlane />
+      </button>
       {showEmoji && (
         <div className="emoji-picker">
           <Picker data={data} onEmojiSelect={addEmoji} locale="ru" />

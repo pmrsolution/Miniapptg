@@ -114,11 +114,15 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
   }, [showChatSearch, setShowChatSearch]);
 
   const isHighlight = (msg) => highlighted.includes(msg.time || msg.created_at);
-  const sortedMessages = [...messages].sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+  const sortedMessages = [...messages].sort((a, b) => {
+    const aDate = new Date(a.created_at);
+    const bDate = new Date(b.created_at);
+    return aDate.getTime() - bDate.getTime();
+  });
 
   return (
-    <div ref={wrapperRef} className="messages-wrapper bubbleList">
-      {isLoading && <div className="skeleton" />}
+    <div ref={wrapperRef} className="messages-wrapper">
+      {isFetchingNextPage && messages.length > 0 && <div className="skeleton" />}
       {!hasNextPage && sortedMessages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
       )}
@@ -129,13 +133,13 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
         const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
         const showDate = index === 0 || (msgDate !== (sortedMessages[index-1]?.time || sortedMessages[index-1]?.created_at ? new Date(sortedMessages[index-1].time || sortedMessages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
         const messageId = msg.id || msg.time || msg.created_at;
-        const isAdmin = msg.from === 'admin';
+        const type = msg.from === 'user' ? 'client' : 'admin';
         return (
           <React.Fragment key={messageId}>
             {showDate && (
               <div className="date-separator"><span>{msgDate}</span></div>
             )}
-            <div className={isAdmin ? 'bubbleAdmin' : 'bubbleClient'} data-message-id={messageId}>
+            <div className={`bubble${type === 'admin' ? ' admin' : ''}`} data-message-id={messageId}>
               <div>{msg.user_message || msg.bot_response || msg.text}</div>
               <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
             </div>

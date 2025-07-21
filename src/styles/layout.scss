@@ -77,11 +77,10 @@
 .avatar[data-avatar-color="9"] { background: var(--avatar-9); } 
 
 .messages-wrapper {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0 20px 32px 20px; /* увеличенный отступ снизу */
-  scroll-behavior: smooth;
-  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
 }
 
 .chat-search-row {
@@ -94,9 +93,9 @@
 
 .inputBox {
   display: flex;
-  flex: 1;
-  align-items: flex-end;
-  gap: 12px;
+  align-items: center;
+  position: relative;
+  gap: 0;
   padding: 10px 20px;
   background: var(--sidebar-bg);
 }
@@ -126,12 +125,10 @@
 } 
 
 .skeleton {
-  width: 100%;
-  height: 48px;
-  background: transparent;
-  border-radius: 12px;
-  margin: 8px 0;
-  animation: fade 220ms ease;
+  visibility: hidden;
+  height: 0;
+  border: none;
+  animation: none;
 }
 @keyframes fade {
   from { opacity: 0; }
@@ -195,22 +192,27 @@
 } 
 
 .bubble {
+  align-self: flex-end;
   position: relative;
-  max-width: 70%;
-  padding: 8px 12px;
-  line-height: 1.28;
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: var(--bubble-max-w);
+  padding: 8px 12px 20px;
+  line-height: 1.3;
   word-break: break-word;
-  margin-block: 2px;
   border-radius: 16px;
+  margin: 0 !important;
+  background: var(--bubble-user-bg);
+  color: #fff;
 }
-.bubble--user {
-  background: var(--bubble-user);
-  margin-left: auto;
-  border-bottom-right-radius: 4px;
+.bubble.admin {
+  align-self: flex-start;
+  background: var(--bubble-admin-bg);
+  border-radius: var(--bubble-admin-br);
+  color: #fff;
 }
-.bubble--admin {
-  background: var(--bubble-admin);
-  border-bottom-left-radius: 4px;
+.bubble + .bubble {
+  margin-top: 6px;
 }
 .bubble .text {
   margin: 0 40px 4px 0;
@@ -291,4 +293,22 @@
 .topSkeleton {
   visibility: hidden;
   height: 0;
+} 
+
+.clip-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  margin-right: 8px;
+}
+.send-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 32px;
+  min-height: 32px;
+  z-index: 2;
 } 
