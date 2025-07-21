@@ -22,7 +22,7 @@ export default function MessageInput({ chatId }) {
 
   const handleSend = () => {
     if (!chatId || sendMessage.isLoading || (!newMessage.trim() && !files.length)) return;
-    sendMessage.mutate({ text: newMessage });
+    sendMessage.mutate({ user_message: newMessage });
     setNewMessage('');
     setFiles([]);
   };

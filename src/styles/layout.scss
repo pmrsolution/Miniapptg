@@ -79,7 +79,7 @@
 .messages-wrapper {
   flex: 1;
   overflow-y: auto;
-  padding: 0 20px;
+  padding: 0 20px 32px 20px; /* увеличенный отступ снизу */
   scroll-behavior: smooth;
   min-height: 0;
 }
@@ -210,6 +210,12 @@
   background: var(--bubble-bot);
   margin-right: auto;
 }
+.bubble.admin {
+  background: var(--bubble-admin);
+  color: var(--text-primary);
+  border-radius: 16px 16px 4px 16px;
+  margin-left: auto;
+}
 .time {
   position: absolute;
   right: 8px;
@@ -228,4 +234,17 @@
 .inputBox-textarea:focus {
   box-shadow: 0 0 0 2px var(--bubble-user);
   border: none;
+} 
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 16px;
+  cursor: pointer;
+} 
+
+.skeleton, .topSkeleton {
+  background: transparent !important;
+  height: 0 !important;
 } 

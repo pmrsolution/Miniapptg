@@ -24,6 +24,7 @@
     --avatar-9: #90a4ae;
     --skeleton-bg: rgba(0,0,0,.02);   /* идеально прозрачный фон */
     --skeleton-radius: 8px;
+    --bubble-admin: #e3f1fd; /* голубой для исходящих */
   }
 
   /* html[data-theme="dark"] */
@@ -49,5 +50,6 @@
     --avatar-7: #e65100;
     --avatar-8: #3e2723;
     --avatar-9: #263238;
+    --bubble-admin: #1a3a4d; /* тёмно-голубой для исходящих */
   }
 } 

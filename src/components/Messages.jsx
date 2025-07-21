@@ -132,7 +132,11 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
           const showDate = msgDate && msgDate !== lastDate;
           if (showDate) lastDate = msgDate;
           const messageId = msg.time || msg.created_at;
-          const isUser = msg.from === 'user';
+          // Логика определения типа сообщения
+          let isUser = false;
+          let isAdmin = false;
+          if (msg.from === 'user' || (!!msg.user_message && !msg.bot_response)) isUser = true;
+          if (msg.from === 'admin' || !!msg.bot_response) isAdmin = true;
           let textHtml = msg.text;
           if (searchTerm && msg.text) {
             textHtml = msg.text.replace(
@@ -145,7 +149,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
               {showDate && (
                 <div className="date-separator"><span>{msgDate}</span></div>
               )}
-              <div className={`bubble ${isUser ? 'user' : 'bot'}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
+              <div className={`bubble${isUser ? ' user' : ''}${isAdmin ? ' admin' : ''}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
                 <span className="searchable" style={{ paddingRight: 48, margin: '0 40px 4px 0', lineHeight: 1.28 }} dangerouslySetInnerHTML={{__html: textHtml}} />
                 {msg.file_url && (
                   msg.file_type && msg.file_type.trim().startsWith('image/') ? (
