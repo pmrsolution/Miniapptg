@@ -25,6 +25,13 @@
     --skeleton-bg: rgba(0,0,0,.02);   /* идеально прозрачный фон */
     --skeleton-radius: 8px;
     --bubble-admin: #2596be; /* голубой для исходящих */
+    --bubble-user-bg: #35a844;          /* клиент зелёный */
+    --bubble-user-br: 16px 16px 4px 16px;
+    --bubble-admin-bg: #0284c7;         /* админ голубой */
+    --bubble-admin-br: 16px 16px 16px 4px;
+    --bubble-max-w: 66%;
+    --bubble-gap: 6px;
+    --time-color: #fff;                 /* контраст к обоим bubbles */
   }
 
   /* html[data-theme="dark"] */

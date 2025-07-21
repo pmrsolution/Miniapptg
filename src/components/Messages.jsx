@@ -124,24 +124,26 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
       {messages.length === 0 && !isLoading && (
         <div className="date-separator">Не найдено</div>
       )}
-      {messages.map((msg, index) => {
-        const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-        const showDate = index === 0 || (msgDate !== (messages[index-1]?.time || messages[index-1]?.created_at ? new Date(messages[index-1].time || messages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
-        const messageId = msg.time || msg.created_at;
-        const bubbleType = msg.from === 'user' || (!!msg.user_message && !msg.bot_response) ? 'user' : 'admin';
-        return (
-          <React.Fragment key={index}>
-            {showDate && (
-              <div className="date-separator"><span>{msgDate}</span></div>
-            )}
-            <div className={`bubble bubble--${bubbleType}`} data-message-id={messageId}>
-              <div className="text">{msg.user_message || msg.bot_response || msg.text}</div>
-              <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
-            </div>
-          </React.Fragment>
-        );
-      })}
-      <div ref={messagesEndRef} />
+      <div className="bubbleWrapper">
+        {messages.map((msg, index) => {
+          const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+          const showDate = index === 0 || (msgDate !== (messages[index-1]?.time || messages[index-1]?.created_at ? new Date(messages[index-1].time || messages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
+          const messageId = msg.id || msg.time || msg.created_at;
+          const isClient = msg.from === 'user';
+          return (
+            <React.Fragment key={messageId}>
+              {showDate && (
+                <div className="date-separator"><span>{msgDate}</span></div>
+              )}
+              <div className={isClient ? 'bubbleClient' : 'bubbleAdmin'} data-message-id={messageId}>
+                <div>{msg.user_message || msg.bot_response || msg.text}</div>
+                <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
+              </div>
+            </React.Fragment>
+          );
+        })}
+        <div ref={messagesEndRef} />
+      </div>
     </div>
   );
 } 
