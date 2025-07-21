@@ -115,8 +115,9 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
 
   const isHighlight = (msg) => highlighted.includes(msg.time || msg.created_at);
   const sortedMessages = [...messages].sort((a, b) => {
-    const aDate = new Date(a.created_at);
-    const bDate = new Date(b.created_at);
+    let aDate, bDate;
+    try { aDate = new Date(a.created_at); } catch { aDate = new Date(0); }
+    try { bDate = new Date(b.created_at); } catch { bDate = new Date(0); }
     return aDate.getTime() - bDate.getTime();
   });
 
@@ -133,13 +134,13 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
         const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
         const showDate = index === 0 || (msgDate !== (sortedMessages[index-1]?.time || sortedMessages[index-1]?.created_at ? new Date(sortedMessages[index-1].time || sortedMessages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
         const messageId = msg.id || msg.time || msg.created_at;
-        const type = msg.from === 'user' ? 'client' : 'admin';
+        const type = (msg.from ?? 'admin') === 'user' ? 'user' : 'admin';
         return (
           <React.Fragment key={messageId}>
             {showDate && (
               <div className="date-separator"><span>{msgDate}</span></div>
             )}
-            <div className={`bubble${type === 'admin' ? ' admin' : ''}`} data-message-id={messageId}>
+            <div className={`bubble ${type}`} data-message-id={messageId}>
               <div>{msg.user_message || msg.bot_response || msg.text}</div>
               <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
             </div>
