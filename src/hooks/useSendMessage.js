@@ -5,7 +5,7 @@ import { chatKeys } from '../lib/queryKeys';
 export function useSendMessage(chatId) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: variables => sendMessage({ chat_id: chatId, ...variables }),
+    mutationFn: variables => sendMessage({ chat_id: chatId, text: variables.user_message }),
     onSuccess: () => setTimeout(() => {
       queryClient.invalidateQueries({ queryKey: ['messages', chatId] });
     }, 30),
