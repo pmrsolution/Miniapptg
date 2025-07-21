@@ -117,7 +117,6 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
 
   return (
     <div ref={wrapperRef} className="messages-wrapper">
-      {/* Skeleton loader только при isLoading */}
       {isLoading && <div className="skeleton" />}
       {!hasNextPage && messages.length > 0 && !isFetchingNextPage && (
         <div className="date-separator">Начало чата</div>
@@ -125,52 +124,23 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
       {messages.length === 0 && !isLoading && (
         <div className="date-separator">Не найдено</div>
       )}
-      {(() => {
-        let lastDate = null;
-        return messages.map((msg, index) => {
-          const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
-          const showDate = msgDate && msgDate !== lastDate;
-          if (showDate) lastDate = msgDate;
-          const messageId = msg.time || msg.created_at;
-          // Логика определения типа сообщения
-          let isUser = false;
-          let isAdmin = false;
-          if (msg.from === 'user' || (!!msg.user_message && !msg.bot_response)) isUser = true;
-          if (msg.from === 'admin' || !!msg.bot_response) isAdmin = true;
-          let textHtml = msg.text;
-          if (searchTerm && msg.text) {
-            textHtml = msg.text.replace(
-              new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi'),
-              '<mark className="searchHighlight">$1</mark>'
-            );
-          }
-          return (
-            <React.Fragment key={index}>
-              {showDate && (
-                <div className="date-separator"><span>{msgDate}</span></div>
-              )}
-              <div className={`bubble${isUser ? ' user' : ''}${isAdmin ? ' admin' : ''}${isHighlight(msg) ? ' highlight' : ''}`} data-message-id={messageId}>
-                <span className="searchable" style={{ paddingRight: 48, margin: '0 40px 4px 0', lineHeight: 1.28 }} dangerouslySetInnerHTML={{__html: textHtml}} />
-                {msg.file_url && (
-                  msg.file_type && msg.file_type.trim().startsWith('image/') ? (
-                    <MessageImage fileUrl={msg.file_url} fileName={msg.file_name} />
-                  ) : (
-                    <a
-                      href={`https://api.telegram.org/file/bot8176156909:AAFppRxHM8-wQgtD-LY3OWku5kiD2v-LHpo/${msg.file_url ? msg.file_url.trim() : ''}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="file-link"
-                    >
-                      {msg.file_name || 'Документ'}
-                    </a>
-                  )
-                )}
-                <span className="time" style={{ position: 'absolute', bottom: 4, right: 8, fontSize: 12, opacity: .7, color: 'var(--text-secondary)' }}>{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
-              </div>
-            </React.Fragment>
-          );
-        });
-      })()}
+      {messages.map((msg, index) => {
+        const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+        const showDate = index === 0 || (msgDate !== (messages[index-1]?.time || messages[index-1]?.created_at ? new Date(messages[index-1].time || messages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
+        const messageId = msg.time || msg.created_at;
+        const bubbleType = msg.from === 'user' || (!!msg.user_message && !msg.bot_response) ? 'user' : 'admin';
+        return (
+          <React.Fragment key={index}>
+            {showDate && (
+              <div className="date-separator"><span>{msgDate}</span></div>
+            )}
+            <div className={`bubble bubble--${bubbleType}`} data-message-id={messageId}>
+              <div className="text">{msg.user_message || msg.bot_response || msg.text}</div>
+              <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
+            </div>
+          </React.Fragment>
+        );
+      })}
       <div ref={messagesEndRef} />
     </div>
   );

@@ -196,37 +196,35 @@
 
 .bubble {
   position: relative;
-  max-width: 66%;
+  max-width: 70%;
   padding: 8px 12px;
+  line-height: 1.28;
+  word-break: break-word;
+  margin-block: 2px;
   border-radius: 16px;
 }
-.bubble.user {
-  border-radius: 16px 16px 4px 16px;
+.bubble--user {
   background: var(--bubble-user);
   margin-left: auto;
+  border-bottom-right-radius: 4px;
 }
-.bubble.bot {
-  border-radius: 16px 16px 16px 4px;
-  background: var(--bubble-bot);
-  margin-right: auto;
-}
-.bubble.admin {
+.bubble--admin {
   background: var(--bubble-admin);
-  color: var(--text-primary);
-  border-radius: 16px 16px 4px 16px;
-  margin-left: auto;
+  border-bottom-left-radius: 4px;
 }
-.time {
+.bubble .text {
+  margin: 0 40px 4px 0;
+}
+.bubble .time {
   position: absolute;
   right: 8px;
   bottom: 4px;
-  font-size: 12px;
+  font-size: 11px;
   opacity: .7;
-  color: var(--text-secondary);
 }
-.topSkeleton {
+.topSkeleton, .skeleton {
+  height: 0 !important;
   background: transparent !important;
-  height: 0;
 }
 .bubble .searchable {
   padding-right: 40px;
@@ -239,12 +237,10 @@
 .chat-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 10px 16px;
-  cursor: pointer;
-} 
-
-.skeleton, .topSkeleton {
-  background: transparent !important;
-  height: 0 !important;
+  gap: 12px;
+  padding: 8px 0;
+}
+.info {
+  margin-left: 0;
+  font-weight: 600;
 } 
