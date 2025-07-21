@@ -129,13 +129,13 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
         const msgDate = (msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
         const showDate = index === 0 || (msgDate !== (sortedMessages[index-1]?.time || sortedMessages[index-1]?.created_at ? new Date(sortedMessages[index-1].time || sortedMessages[index-1].created_at).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) : ''));
         const messageId = msg.id || msg.time || msg.created_at;
-        const isClient = msg.from === 'user';
+        const isAdmin = msg.from === 'admin';
         return (
           <React.Fragment key={messageId}>
             {showDate && (
               <div className="date-separator"><span>{msgDate}</span></div>
             )}
-            <div className={isClient ? 'bubbleClient' : 'bubbleAdmin'} data-message-id={messageId}>
+            <div className={isAdmin ? 'bubbleAdmin' : 'bubbleClient'} data-message-id={messageId}>
               <div>{msg.user_message || msg.bot_response || msg.text}</div>
               <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
             </div>

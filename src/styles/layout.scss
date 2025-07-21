@@ -223,8 +223,12 @@
   opacity: .7;
 }
 .topSkeleton, .skeleton {
-  height: 0 !important;
+  visibility: hidden !important;
   background: transparent !important;
+  height: 0 !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 .bubble .searchable {
   padding-right: 40px;
@@ -264,13 +268,13 @@
   margin: 0 !important;
 }
 .bubbleClient {
-  align-self: flex-end;
+  align-self: flex-start;
   background: var(--bubble-user-bg);
   border-radius: var(--bubble-user-br);
   color: #fff;
 }
 .bubbleAdmin {
-  align-self: flex-start;
+  align-self: flex-end;
   background: var(--bubble-admin-bg);
   border-radius: var(--bubble-admin-br);
   color: #fff;
