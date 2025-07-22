@@ -141,13 +141,7 @@ export default function Messages({ chatId, search, showChatSearch, setShowChatSe
               <div className="date-separator"><span>{msgDate}</span></div>
             )}
             <div className={`bubble ${type}`} data-message-id={messageId}>
-              <div>
-                {msg.user_message || msg.bot_response || msg.text}
-                <div style={{fontSize:10,opacity:0.5}}>
-                  from: {msg.from} <br/>
-                  created_at: {msg.created_at}
-                </div>
-              </div>
+              <div>{msg.user_message || msg.bot_response || msg.text}</div>
               <span className="time">{(msg.time || msg.created_at) ? new Date(msg.time || msg.created_at).toLocaleTimeString() : ''}</span>
             </div>
           </React.Fragment>

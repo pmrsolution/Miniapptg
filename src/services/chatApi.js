@@ -23,13 +23,24 @@ export async function getMessages({ chat_id, limit = 50, before, search }) {
   if (!res.ok) throw new Error('Ошибка загрузки сообщений');
   const data = await res.json();
 
-  // Если backend уже возвращает объект с messages/hasMore/lastDate — просто верни его
-  if (data.messages && Array.isArray(data.messages)) return data;
+  // Если backend уже возвращает объект с messages/hasMore/lastDate — просто верни его, но нормализуй from
+  if (data.messages && Array.isArray(data.messages)) {
+    return {
+      ...data,
+      messages: data.messages.map(m => ({
+        ...m,
+        from: m.from === 'user' ? 'user' : 'admin'
+      }))
+    };
+  }
 
-  // Если backend возвращает массив (старый формат) — оберни в объект
+  // Если backend возвращает массив (старый формат) — оберни в объект и нормализуй from
   const arr = Array.isArray(data.output) ? data.output : Array.isArray(data) ? data : [];
   return {
-    messages: arr,
+    messages: arr.map(m => ({
+      ...m,
+      from: m.from === 'user' ? 'user' : 'admin'
+    })),
     hasMore: false,
     lastDate: arr.length ? arr[arr.length - 1].created_at : null
   };
