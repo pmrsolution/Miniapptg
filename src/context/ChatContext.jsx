@@ -1,30 +1,15 @@
-import React, { createContext, useContext, useState } from 'react';
-import useChats from '../hooks/useChats';
-import { useUser } from './UserContext';
-
-const ChatContext = createContext();
+import React from 'react';
 
 export function ChatProvider({ children }) {
-  const { chat_id } = useUser() || {};
-  const { data: chats = [], isLoading } = useChats(chat_id);
-  const [selectedChatId, setSelectedChatId] = useState(null);
-
-  const selectedChat = chats.find(c => c.chat_id === selectedChatId) || null;
-
+  console.log('[ChatProvider] entry');
   return (
-    <ChatContext.Provider value={{
-      chats,
-      isLoading,
-      selectedChatId,
-      setSelectedChatId,
-      selectedChat,
-      chat_id
-    }}>
+    <>
+      <div id="chat-provider-active" style={{position:'fixed',top:0,right:0,width:1,height:1,background:'red'}} />
       {children}
-    </ChatContext.Provider>
+    </>
   );
 }
 
 export function useChatContext() {
-  return useContext(ChatContext);
+  return {};
 } 
