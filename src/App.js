@@ -17,8 +17,10 @@ export default function App() {
             background: 'lime',
             zIndex: 1000
           }} />
-          <Sidebar />
-          <Chat />
+          <div style={{display:'flex',flexDirection:'row',height:'100vh'}}>
+            <Sidebar />
+            <Chat />
+          </div>
         </ChatProvider>
       </WebAppGuard>
     </ThemeProvider>
