@@ -10,7 +10,7 @@ export default function App() {
     <ThemeProvider>
       <WebAppGuard>
         <ChatProvider>
-          {/* Lime-bar sentinel for height control */}
+          {/* Lime-bar sentinel for QA, можно убрать перед продом */}
           <div style={{
             position: 'fixed',
             top: 0,
@@ -20,7 +20,7 @@ export default function App() {
             background: 'lime',
             zIndex: 1000
           }} />
-          <div style={{display:'flex',flexDirection:'row',height:'100vh'}}>
+          <div className="app-layout" style={{display:'flex',flexDirection:'row',height:'100vh'}}>
             <Sidebar />
             <Chat />
           </div>

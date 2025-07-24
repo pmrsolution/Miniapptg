@@ -4,12 +4,11 @@ import { useChatContext } from '../context/ChatContext';
 export default function Sidebar() {
   const { chats: realChats, setSelectedChatId } = useChatContext();
   const mockChats = [
-    { chat_id: 1, title: 'Kimi-Test-Chat-1', lastMessage: 'Hi' },
-    { chat_id: 2, title: 'Kimi-Test-Chat-2', lastMessage: '👋' },
-    { chat_id: 3, title: 'Kimi-Test-Chat-3', lastMessage: 'Test' },
+    { chat_id: 1, title: 'Alice', lastMessage: 'Hi!' },
+    { chat_id: 2, title: 'Bob', lastMessage: '👋' },
+    { chat_id: 3, title: 'Support Bot', lastMessage: 'Need help?' },
   ];
   const chats = Array.isArray(realChats) && realChats.length ? realChats : mockChats;
-  console.log('[Sidebar] using', chats.length, 'chats');
   return (
     <div style={{
       width: 240,
@@ -26,16 +25,19 @@ export default function Sidebar() {
         <div
           key={c.chat_id}
           style={{
-            padding: 8,
-            marginBottom: 4,
+            padding: 12,
+            marginBottom: 8,
             background: '#cdf',
             color: '#222',
             cursor: 'pointer',
-            borderRadius: 6
+            borderRadius: 8,
+            fontWeight: 500,
+            fontSize: 18
           }}
           onClick={() => setSelectedChatId(c.chat_id)}
         >
-          {c.title || c.first_name || c.chat_id}
+          {c.title}
+          <div style={{fontSize:14, color:'#666'}}>{c.lastMessage}</div>
         </div>
       ))}
     </div>
