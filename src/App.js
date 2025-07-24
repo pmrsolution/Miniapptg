@@ -3,6 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import WebAppGuard from './components/WebAppGuard';
 import { ChatProvider } from './context/ChatContext';
 import Sidebar from './components/Sidebar';
+import Chat from './components/Chat';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
             zIndex: 1000
           }} />
           <Sidebar />
+          <Chat />
         </ChatProvider>
       </WebAppGuard>
     </ThemeProvider>
