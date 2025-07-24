@@ -18,7 +18,7 @@ function getDebugInfo() {
     now: now.toISOString(),
     authDate: authDate?.toISOString(),
     env: {
-      botUrl: location.href,
+      botUrl: window.location.href,
       origin: document.referrer,
       userAgent: navigator.userAgent
     }
