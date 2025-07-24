@@ -11,11 +11,28 @@ export default function Sidebar() {
   const chats = Array.isArray(realChats) && realChats.length ? realChats : mockChats;
   console.log('[Sidebar] using', chats.length, 'chats');
   return (
-    <div style={{display:'flex',flexDirection:'column',flex:1,padding:8,background:'#fee'}}>
+    <div style={{
+      width: 240,
+      minWidth: 180,
+      maxWidth: 320,
+      background: '#fff',
+      borderRight: '1px solid #eee',
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh',
+      padding: 8
+    }}>
       {chats.map(c => (
         <div
           key={c.chat_id}
-          style={{padding:8,marginBottom:4,background:'#cdf',cursor:'pointer'}}
+          style={{
+            padding: 8,
+            marginBottom: 4,
+            background: '#cdf',
+            color: '#222',
+            cursor: 'pointer',
+            borderRadius: 6
+          }}
           onClick={() => setSelectedChatId(c.chat_id)}
         >
           {c.title || c.first_name || c.chat_id}
