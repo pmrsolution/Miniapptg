@@ -63,7 +63,7 @@
   font-size: 22px;
   user-select: none;
   flex-shrink: 0;
-  background: var(--avatar-0); // fallback
+  background: var(--avatar-0); /* fallback */
 }
 .avatar[data-avatar-color="0"] { background: var(--avatar-0); }
 .avatar[data-avatar-color="1"] { background: var(--avatar-1); }
