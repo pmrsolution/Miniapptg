@@ -10,9 +10,12 @@ export default function App() {
     <ThemeProvider>
       <WebAppGuard>
         <ChatProvider>
+          {/* Lime-bar sentinel for height control */}
           <div style={{
             position: 'fixed',
-            inset: 0,
+            top: 0,
+            left: 0,
+            right: 0,
             height: '6px',
             background: 'lime',
             zIndex: 1000
