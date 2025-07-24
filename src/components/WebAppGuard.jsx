@@ -30,5 +30,5 @@ function getDebugInfo() {
 
 export default function WebAppGuard({ children }) {
   console.log('[Guard] render start');
-  return <div style={{background:'#f00',color:'#fff',position:'fixed',top:0,left:0,zIndex:99999,padding:'16px'}}>Guard alive</div>;
+  return <>{children}</>;
 } 
