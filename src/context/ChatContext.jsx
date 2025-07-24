@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useState } from 'react';
 import useChats from '../hooks/useChats';
+import { useUser } from './UserContext';
 
 const ChatContext = createContext();
 
 export function ChatProvider({ children }) {
-  const { data: chats = [], isLoading } = useChats();
+  const { chat_id } = useUser() || {};
+  const { data: chats = [], isLoading } = useChats(chat_id);
   const [selectedChatId, setSelectedChatId] = useState(null);
 
   const selectedChat = chats.find(c => c.chat_id === selectedChatId) || null;
@@ -15,7 +17,8 @@ export function ChatProvider({ children }) {
       isLoading,
       selectedChatId,
       setSelectedChatId,
-      selectedChat
+      selectedChat,
+      chat_id
     }}>
       {children}
     </ChatContext.Provider>

@@ -1,0 +1,5 @@
+@import './styles/variables.scss';
+@import './styles/layout.scss';
+@import './styles/search.scss';
+@import './styles/global.scss';
+@import './styles/responsive.scss'; 
