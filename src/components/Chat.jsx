@@ -1,11 +1,20 @@
 import React from 'react';
+import Messages from './Messages';
 
 export default function Chat() {
   return (
     <>
-      <div style={{position:'fixed',top:0,left:0,right:0,background:'#faa',height:'20vh',zIndex:1000}}>TEST BAR</div>
-      <div style={{display:'flex',flexDirection:'column',flex:1,minHeight:'100vh',background:'#efe',padding:16}}>
-        {/* real content would go here */}
+      {/* lime-bar sentinel remains as before */}
+      <div style={{
+        position: 'fixed',
+        inset: 0,
+        height: '6px',
+        background: 'lime',
+        zIndex: 1000
+      }} />
+      <div style={{display:'flex',flexDirection:'column',flex:1}}>
+        <div style={{background:'#ffa',padding:8}}>CHAT BODY</div>
+        <Messages />
       </div>
     </>
   );
