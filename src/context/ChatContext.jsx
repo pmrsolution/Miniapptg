@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import useChats from '../hooks/useChats';
 import { useUser } from './UserContext';
 
@@ -9,6 +9,13 @@ export function ChatProvider({ children }) {
   const { data: chats = [], isLoading } = useChats(chat_id);
   const [selectedChatId, setSelectedChatId] = useState(null);
   const selectedChat = chats.find(c => c.chat_id === selectedChatId) || null;
+
+  // Если selectedChatId не выбран, выбираем первый чат из списка
+  useEffect(() => {
+    if (!selectedChatId && chats.length > 0) {
+      setSelectedChatId(chats[0].chat_id);
+    }
+  }, [selectedChatId, chats]);
 
   const value = {
     chats,
