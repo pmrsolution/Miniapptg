@@ -5,12 +5,12 @@ import MessageInput from './MessageInput';
 import ChatHeader from './ChatHeader';
 
 export default function Chat() {
-  const { selectedChatId } = useChatContext();
+  const { selectedChatId, selectedChat } = useChatContext();
   return (
     <>
       {selectedChatId ? (
         <>
-          <ChatHeader selectedChat={{ first_name: 'Chat', last_time: new Date().toISOString() }} />
+          <ChatHeader selectedChat={selectedChat} />
           <Messages chatId={selectedChatId} />
           <MessageInput chatId={selectedChatId} />
         </>

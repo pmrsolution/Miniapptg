@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 export default function Messages({ chatId }) {
   // Мок-данные для демо
@@ -9,8 +9,45 @@ export default function Messages({ chatId }) {
     { id: 4, text: 'Sure, ask me!', from: 'admin', created_at: '2024-06-08T15:08:02' },
   ];
   const messages = mockMessages;
+  const wrapperRef = useRef(null);
+
+  // Восстановление позиции скролла при смене чата
+  useEffect(() => {
+    if (!chatId || !wrapperRef.current) return;
+    const key = `scroll_${chatId}`;
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      try {
+        const { scrollTop, timestamp } = JSON.parse(saved);
+        // Восстанавливаем только если данные не старше 24ч
+        if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+          wrapperRef.current.scrollTop = scrollTop;
+          return;
+        }
+      } catch {}
+    }
+    // Если сообщений мало — скроллим вниз
+    if (messages.length < 15) {
+      wrapperRef.current.scrollTop = wrapperRef.current.scrollHeight;
+    }
+  }, [chatId, messages.length]);
+
+  // Сохраняем позицию скролла при уходе
+  useEffect(() => {
+    if (!chatId || !wrapperRef.current) return;
+    const key = `scroll_${chatId}`;
+    const save = () => {
+      localStorage.setItem(key, JSON.stringify({
+        scrollTop: wrapperRef.current.scrollTop,
+        timestamp: Date.now()
+      }));
+    };
+    wrapperRef.current.addEventListener('scroll', save);
+    return () => wrapperRef.current.removeEventListener('scroll', save);
+  }, [chatId]);
+
   return (
-    <div className="messages-wrapper">
+    <div className="messages-wrapper" ref={wrapperRef}>
       <div className="messages">
         {messages.map(msg => (
           <div key={msg.id} className={`message-bubble ${msg.from === 'user' ? 'user' : 'bot'}`}>
