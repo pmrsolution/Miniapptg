@@ -111,6 +111,14 @@ export default function MessageInput({ chatId }) {
         }}
       />
       <button
+        type="button"
+        className="emoji-btn"
+        onClick={() => setShowEmoji(!showEmoji)}
+        title="Смайлы"
+      >
+        <FaRegSmile />
+      </button>
+      <button
         onClick={handleSend}
         disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
         title="Отправить"
@@ -118,14 +126,6 @@ export default function MessageInput({ chatId }) {
         type="submit"
       >
         <FaPaperPlane />
-      </button>
-      <button
-        type="button"
-        className="emoji-btn"
-        onClick={() => setShowEmoji(!showEmoji)}
-        title="Смайлы"
-      >
-        <FaRegSmile />
       </button>
       {showEmoji && (
         <div className="emoji-picker">

@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useChatContext } from '../context/ChatContext';
-import { MOCK_CHATS } from '../mocks';
 
 export default function Sidebar({ selectedChatId }) {
   const { chats: realChats, setSelectedChatId, isLoading, error } = useChatContext();
-  const chats = isLoading || error || !realChats?.length ? MOCK_CHATS : realChats;
+  const chats = Array.isArray(realChats) ? realChats : [];
   const [search, setSearch] = useState('');
   const inputRef = useRef(null);
 
