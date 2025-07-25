@@ -3,13 +3,19 @@ async function fetcher(url, bodyObj = null, method = 'POST') {
   const body = new FormData();
   Object.entries(bodyObj || {}).forEach(([k, v]) => body.append(k, v));
 
-  const res = await fetch(url, { method, body });
+  const res = await fetch(url, {
+    method,
+    body,
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+  });
   if (!res.ok) throw new Error(res.statusText);
   return res.json();
 }
 
 export async function getChats() {
-  const res = await fetch('/api/chats');
+  const res = await fetch('/api/chats', {
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+  });
   if (!res.ok) throw new Error('Ошибка загрузки чатов');
   const data = await res.json();
   return Array.isArray(data.output) ? data.output : Array.isArray(data) ? data : [];
@@ -19,7 +25,9 @@ export async function getMessages({ chat_id, limit = 50, before, search }) {
   const params = new URLSearchParams({ chat_id, limit });
   if (before) params.append('before', before);
   if (search && search.length >= 2) params.append('search', search);
-  const res = await fetch(`/api/messages?${params}`);
+  const res = await fetch(`/api/messages?${params}`, {
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' }
+  });
   if (!res.ok) throw new Error('Ошибка загрузки сообщений');
   const data = await res.json();
 

@@ -1101,7 +1101,7 @@
   flex-direction: row;
   height: 100vh;
   min-height: 0;
-  background: #f7f7f7;
+  background: var(--tg-theme-bg-color);
 }
 .tgweb-layout-wide .app-wrapper {
   display: flex;
