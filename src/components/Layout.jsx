@@ -15,13 +15,15 @@ function ResponsiveLayout() {
 
   const isDesktop = windowWidth >= 768;
 
-  // Desktop: sidebar + chat-area в одной flex-строке
+  // Desktop: sidebar + chat-area в одной flex-строке, chat-area центрирована и ограничена по ширине
   if (isDesktop) {
     return (
       <div className="tgweb-layout-wide" style={{display:'flex', flexDirection:'row', height:'100vh', minHeight:0}}>
         <Sidebar selectedChatId={selectedChatId} />
-        <div className="chat-area" style={{flex:1, minWidth:0, minHeight:0, display:'flex', flexDirection:'column'}}>
-          <Chat />
+        <div className="chat-area">
+          <div className="chat-container">
+            <Chat />
+          </div>
         </div>
       </div>
     );
@@ -31,7 +33,9 @@ function ResponsiveLayout() {
       <div className="tgweb-layout-narrow">
         {selectedChatId ? (
           <div className="chat-area">
-            <Chat />
+            <div className="chat-container">
+              <Chat />
+            </div>
           </div>
         ) : (
           <Sidebar selectedChatId={selectedChatId} />
