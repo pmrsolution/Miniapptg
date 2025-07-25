@@ -15,12 +15,12 @@ function ResponsiveLayout() {
 
   const isDesktop = windowWidth >= 768;
 
-  // Desktop: sidebar + chat-area. Mobile: только один экран.
+  // Desktop: sidebar + chat-area в одной flex-строке
   if (isDesktop) {
     return (
-      <div className="tgweb-layout-wide">
+      <div className="tgweb-layout-wide" style={{display:'flex', flexDirection:'row', height:'100vh', minHeight:0}}>
         <Sidebar selectedChatId={selectedChatId} />
-        <div className="chat-area">
+        <div className="chat-area" style={{flex:1, minWidth:0, minHeight:0, display:'flex', flexDirection:'column'}}>
           <Chat />
         </div>
       </div>

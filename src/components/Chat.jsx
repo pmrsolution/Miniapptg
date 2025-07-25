@@ -9,11 +9,13 @@ export default function Chat() {
   return (
     <>
       {selectedChatId ? (
-        <>
+        <div className="chat-area-column" style={{display:'flex', flexDirection:'column', height:'100%', minHeight:0}}>
           <ChatHeader selectedChat={selectedChat} />
-          <Messages chatId={selectedChatId} />
+          <div style={{flex:1, minHeight:0, display:'flex', flexDirection:'column'}}>
+            <Messages chatId={selectedChatId} />
+          </div>
           <MessageInput chatId={selectedChatId} />
-        </>
+        </div>
       ) : (
         <div className="no-chat-selected">Выберите чат для просмотра сообщений</div>
       )}
