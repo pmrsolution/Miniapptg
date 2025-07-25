@@ -1289,4 +1289,12 @@
   align-items: flex-start;
   max-width: 240px;
 }
-/* --- Конец стилей для документов --- */ 
+/* --- Конец стилей для документов --- */
+
+.chat-area-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 0;
+  width: 100%;
+} 
