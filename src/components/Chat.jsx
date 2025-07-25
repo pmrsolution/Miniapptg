@@ -1,19 +1,22 @@
 import React from 'react';
 import Messages from './Messages';
 import { useChatContext } from '../context/ChatContext';
+import MessageInput from './MessageInput';
+import ChatHeader from './ChatHeader';
 
 export default function Chat() {
   const { selectedChatId } = useChatContext();
   return (
-    <div style={{flex:1, minHeight:0, background:'#f9f9f9', display:'flex', flexDirection:'column', height:'100vh'}}>
-      <div style={{background:'#ffa',padding:16,fontWeight:600,fontSize:20}}>Chat</div>
-      <div style={{flex:1, minHeight:0, display:'flex', flexDirection:'column'}}>
-        {selectedChatId ? (
+    <>
+      {selectedChatId ? (
+        <>
+          <ChatHeader selectedChat={{ first_name: 'Chat', last_time: new Date().toISOString() }} />
           <Messages chatId={selectedChatId} />
-        ) : (
-          <div style={{padding:32, fontSize:24, color:'#888'}}>Select a chat</div>
-        )}
-      </div>
-    </div>
+          <MessageInput chatId={selectedChatId} />
+        </>
+      ) : (
+        <div className="no-chat-selected">Выберите чат для просмотра сообщений</div>
+      )}
+    </>
   );
 } 
