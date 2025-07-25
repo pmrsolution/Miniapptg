@@ -7,7 +7,7 @@ import useSearchPanel from '../hooks/useSearchPanel';
 
 function ResponsiveLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { selectedChatId } = useChatContext();
+  const { selectedChatId, setSelectedChatId } = useChatContext();
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -15,10 +15,10 @@ function ResponsiveLayout() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const isDesktop = windowWidth >= 768;
+  const isWide = windowWidth > 900;
 
-  // Desktop: sidebar + chat-area в одной flex-строке, chat-area центрирована и ограничена по ширине
-  if (isDesktop) {
+  if (isWide) {
+    // Desktop: sidebar + chat-area
     return (
       <div className="tgweb-layout-wide">
         <div className="app-wrapper">
@@ -30,11 +30,20 @@ function ResponsiveLayout() {
       </div>
     );
   } else {
-    // Mobile: если выбран чат — только чат, иначе только sidebar
+    // Mobile/narrow: только sidebar или только chat-area
     return (
       <div className="tgweb-layout-narrow">
         {selectedChatId ? (
           <div className="chat-area">
+            {/* Кнопка назад */}
+            <button
+              className="chat-header-btn chat-header-back"
+              style={{position:'absolute',left:8,top:8,zIndex:10}}
+              onClick={() => setSelectedChatId(null)}
+              title="Назад"
+            >
+              &larr;
+            </button>
             <Chat />
           </div>
         ) : (
