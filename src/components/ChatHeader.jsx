@@ -2,6 +2,7 @@ import React from 'react';
 import { FaSearch, FaExpand } from 'react-icons/fa';
 import { Avatar } from './Avatar';
 import { useTheme } from '../context/ThemeContext';
+import SearchTrigger from './SearchTrigger';
 
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
@@ -20,7 +21,8 @@ export default function ChatHeader({
   handleFullscreen,
   showDebugMenu,
   setShowDebugMenu,
-  onBack
+  onBack,
+  onSearchOpen // добавляем проп для открытия поиска
 }) {
   if (!selectedChat) return null;
   return (
@@ -30,7 +32,7 @@ export default function ChatHeader({
       <span className="chat-header-title">{selectedChat.first_name || 'Диалог с пользователем'}</span>
       <span className="chat-header-time">{selectedChat.last_time ? new Date(selectedChat.last_time).toLocaleTimeString() : ''}</span>
       <div className="chat-header-actions">
-        <button className="chat-header-btn" onClick={() => setShowChatSearch(s => !s)} title="Поиск"><FaSearch /></button>
+        <SearchTrigger onClick={onSearchOpen} />
         <button className="chat-header-btn" onClick={handleFullscreen} title={isFullscreen ? 'Свернуть' : 'На весь экран'}><FaExpand /></button>
         <button className="chat-header-btn settings-btn" onClick={() => setShowDebugMenu(!showDebugMenu)} title="Меню отладки">⚙️</button>
         <ThemeToggle />

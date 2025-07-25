@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import Chat from './Chat';
 import { ChatProvider, useChatContext } from '../context/ChatContext';
+import SearchPanel from './SearchPanel';
+import useSearchPanel from '../hooks/useSearchPanel';
 
 function ResponsiveLayout() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -44,9 +46,39 @@ function ResponsiveLayout() {
 }
 
 export default function Layout() {
+  const searchPanel = useSearchPanel();
+  const { selectedChatId, setSelectedChatId } = useChatContext();
+
+  const handleResultClick = (item) => {
+    if (item.chat_id) setSelectedChatId(item.chat_id);
+    searchPanel.onClose();
+    setTimeout(() => {
+      const el = document.querySelector(`[data-message-id="${item.created_at || item.time}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+  };
+
   return (
     <ChatProvider>
       <ResponsiveLayout />
+      <SearchPanel
+        open={searchPanel.open}
+        onClose={searchPanel.onClose}
+        onTabChange={searchPanel.onTabChange}
+        activeTab={searchPanel.activeTab}
+        query={searchPanel.query}
+        setQuery={searchPanel.setQuery}
+        results={searchPanel.results}
+        isLoading={searchPanel.isLoading}
+        error={searchPanel.error}
+        highlightedId={searchPanel.highlightedId}
+        setHighlightedId={searchPanel.setHighlightedId}
+        searchInChat={q => searchPanel.searchInChat(selectedChatId)}
+        searchGlobal={searchPanel.searchGlobal}
+        navigateResults={searchPanel.navigateResults}
+        chatId={selectedChatId}
+        onResultClick={handleResultClick}
+      />
     </ChatProvider>
   );
 } 

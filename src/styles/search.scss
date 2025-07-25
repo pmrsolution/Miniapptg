@@ -28,4 +28,102 @@
 
 .searchHighlight {
   background: #ffff0050;
+}
+
+.search-trigger {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-secondary, #888);
+  transition: color 0.2s;
+}
+.search-trigger:hover {
+  color: var(--text-primary, #222);
+}
+
+.search-panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 40;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+.search-panel {
+  margin-top: 60px;
+  background: var(--tg-theme-bg-color, #fff);
+  border-radius: 18px;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+  min-width: 320px;
+  max-width: 90vw;
+  padding: 24px 20px 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.search-panel-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.search-panel-tabs button {
+  background: none;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 12px;
+  font-weight: 500;
+  color: var(--text-secondary, #888);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.search-panel-tabs .active {
+  background: var(--tg-theme-button-color, #e0e0e0);
+  color: var(--text-primary, #222);
+}
+.search-panel-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border, #ddd);
+  font-size: 16px;
+  outline: none;
+}
+.search-panel-results {
+  max-height: 260px;
+  overflow-y: auto;
+  margin-top: 8px;
+}
+.search-panel-result {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border, #eee);
+  color: var(--text-primary, #222);
+  cursor: pointer;
+}
+.search-panel-result:last-child {
+  border-bottom: none;
+}
+.search-panel-empty {
+  color: var(--text-secondary, #aaa);
+  text-align: center;
+  padding: 24px 0;
+}
+.search-panel-close {
+  align-self: flex-end;
+  background: none;
+  border: none;
+  color: var(--text-secondary, #888);
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.search-panel-result.active {
+  background: #4a9eff22;
+  color: #222;
+}
+.search-highlight {
+  background: #4a9eff !important;
+  color: #fff !important;
+  transition: background 0.25s, color 0.25s;
 } 

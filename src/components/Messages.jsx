@@ -50,7 +50,7 @@ export default function Messages({ chatId }) {
     <div className="messages-wrapper" ref={wrapperRef}>
       <div className="messages">
         {messages.map(msg => (
-          <div key={msg.id} className={`message-bubble ${msg.from === 'user' ? 'user' : 'bot'}`}>
+          <div key={msg.id} data-message-id={msg.created_at || msg.time} className={`message-bubble ${msg.from === 'user' ? 'user' : 'bot'}`}>
             <div className="message-avatar">{msg.from === 'user' ? 'Я' : 'Бот'}</div>
             <div className="message-content">
               <div>{msg.text}</div>
