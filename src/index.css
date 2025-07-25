@@ -1129,7 +1129,8 @@
   margin: 0;
 }
 
-@media (min-width: 900px) {
+/* Центрирование и ограничение ширины только для очень широких экранов */
+@media (min-width: 1200px) {
   .tgweb-layout-wide .chat-area {
     max-width: 700px;
     margin: 0 auto;
@@ -1137,6 +1138,17 @@
   .messages-wrapper {
     max-width: 700px;
     margin: 0 auto;
+  }
+}
+
+/* Сброс ограничений для всех меньших ширин */
+@media (max-width: 1199px) {
+  .tgweb-layout-wide .chat-area,
+  .messages-wrapper {
+    max-width: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    min-width: 0 !important;
   }
 }
 
