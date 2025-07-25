@@ -1115,7 +1115,7 @@
 .tgweb-layout-wide .chat-area {
   max-width: 700px;
   margin: 0 auto;
-  flex: 1 1 0%;
+  flex: 1 1 700px;
   background: var(--tg-theme-bg-color);
   overflow: hidden;
 }

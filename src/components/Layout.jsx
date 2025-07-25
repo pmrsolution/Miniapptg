@@ -22,9 +22,7 @@ function ResponsiveLayout() {
         <div className="app-wrapper">
           <Sidebar selectedChatId={selectedChatId} />
           <div className="chat-area">
-            <div className="chat-container">
-              <Chat />
-            </div>
+            <Chat />
           </div>
         </div>
       </div>
@@ -35,9 +33,7 @@ function ResponsiveLayout() {
       <div className="tgweb-layout-narrow">
         {selectedChatId ? (
           <div className="chat-area">
-            <div className="chat-container">
-              <Chat />
-            </div>
+            <Chat />
           </div>
         ) : (
           <Sidebar selectedChatId={selectedChatId} />
