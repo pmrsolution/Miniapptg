@@ -6,7 +6,7 @@ import { useTheme } from '../context/ThemeContext';
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
   return (
-    <button className="btn" onClick={toggleTheme} title="Сменить тему">
+    <button className="chat-header-btn" onClick={toggleTheme} title="Сменить тему">
       {theme === 'dark' ? '☀️' : '🌙'}
     </button>
   );
@@ -23,17 +23,18 @@ export default function ChatHeader({
   onBack
 }) {
   if (!selectedChat) return null;
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
   return (
-    <>
-      <button className="btn back-btn" onClick={onBack} title="Назад">&larr;</button>
-      <Avatar letter={selectedChat.first_name?.[0]?.toUpperCase() || '?'} />
-      <span className="name">{selectedChat.first_name || 'Диалог с пользователем'}</span>
-      <div style={{ flex: 1 }} />
-      <button className="btn" onClick={() => setShowChatSearch(s => !s)} title="Поиск"><FaSearch /></button>
-      <button className="btn" onClick={handleFullscreen} title={isFullscreen ? 'Свернуть' : 'На весь экран'}><FaExpand /></button>
-      <button className="btn settings-btn" onClick={() => setShowDebugMenu(!showDebugMenu)} title="Меню отладки">⚙️</button>
-      <ThemeToggle />
-    </>
+    <div className="chat-header-tgweb">
+      <button className="chat-header-btn chat-header-back" onClick={onBack} title="Назад">&larr;</button>
+      <div className="chat-header-avatar">{selectedChat.first_name?.[0]?.toUpperCase() || '?'}</div>
+      <span className="chat-header-title">{selectedChat.first_name || 'Диалог с пользователем'}</span>
+      <span className="chat-header-time">{selectedChat.last_time ? new Date(selectedChat.last_time).toLocaleTimeString() : ''}</span>
+      <div className="chat-header-actions">
+        <button className="chat-header-btn" onClick={() => setShowChatSearch(s => !s)} title="Поиск"><FaSearch /></button>
+        <button className="chat-header-btn" onClick={handleFullscreen} title={isFullscreen ? 'Свернуть' : 'На весь экран'}><FaExpand /></button>
+        <button className="chat-header-btn settings-btn" onClick={() => setShowDebugMenu(!showDebugMenu)} title="Меню отладки">⚙️</button>
+        <ThemeToggle />
+      </div>
+    </div>
   );
 } 

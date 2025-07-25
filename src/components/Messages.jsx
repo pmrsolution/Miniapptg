@@ -10,23 +10,18 @@ export default function Messages({ chatId }) {
   ];
   const messages = mockMessages;
   return (
-    <div style={{flex:1, minHeight:0, overflowY:'auto', padding:16, background:'#fff'}}>
-      {messages.map(msg => (
-        <div key={msg.id} style={{
-          marginBottom: 12,
-          alignSelf: msg.from === 'user' ? 'flex-start' : 'flex-end',
-          background: msg.from === 'user' ? '#e0f7fa' : '#ffe0b2',
-          color: '#222',
-          borderRadius: 12,
-          padding: '10px 16px',
-          maxWidth: '70%',
-          fontSize: 16,
-          boxShadow: '0 1px 4px #0001'
-        }}>
-          <div>{msg.text}</div>
-          <div style={{fontSize:12, color:'#888', marginTop:4}}>{new Date(msg.created_at).toLocaleTimeString()}</div>
-        </div>
-      ))}
+    <div className="messages-wrapper">
+      <div className="messages">
+        {messages.map(msg => (
+          <div key={msg.id} className={`message-bubble ${msg.from === 'user' ? 'user' : 'bot'}`}>
+            <div className="message-avatar">{msg.from === 'user' ? 'Я' : 'Бот'}</div>
+            <div className="message-content">
+              <div>{msg.text}</div>
+              <div className="message-time">{new Date(msg.created_at).toLocaleTimeString()}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 } 

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FaRegSmile, FaPaperclip, FaPaperPlane, FaMicrophone } from 'react-icons/fa';
+import { FaRegSmile, FaPaperclip, FaPaperPlane } from 'react-icons/fa';
 import Picker from '@emoji-mart/react';
 import data from '@emoji-mart/data';
 import { useSendMessage } from '../hooks/useSendMessage';
@@ -8,11 +8,9 @@ export default function MessageInput({ chatId }) {
   const [newMessage, setNewMessage] = useState('');
   const [showEmoji, setShowEmoji] = useState(false);
   const [files, setFiles] = useState([]);
-  const [dragActive, setDragActive] = useState(false);
   const textareaRef = useRef(null);
   const sendMessage = useSendMessage(chatId);
 
-  // Авто-рост textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
@@ -34,26 +32,9 @@ export default function MessageInput({ chatId }) {
     setShowEmoji(false);
   };
 
-  // Drag&Drop
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    setDragActive(true);
-  };
-  const handleDragLeave = (e) => {
-    e.preventDefault();
-    setDragActive(false);
-  };
-  const handleDrop = (e) => {
-    e.preventDefault();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      setFiles(Array.from(e.dataTransfer.files));
-    }
-  };
-
   return (
-    <form className="inputBox" onSubmit={e => { e.preventDefault(); handleSend(); }}>
-      <label className="clip-area" role="button" htmlFor="file-input">
+    <form className="message-input" onSubmit={e => { e.preventDefault(); handleSend(); }}>
+      <label className="file-btn" role="button" htmlFor="file-input">
         <FaPaperclip />
         <input
           id="file-input"
@@ -65,7 +46,7 @@ export default function MessageInput({ chatId }) {
       </label>
       <textarea
         ref={textareaRef}
-        className="inputBox-textarea"
+        className="message-textarea"
         value={newMessage}
         onChange={e => setNewMessage(e.target.value)}
         placeholder="Введите сообщение..."
@@ -87,17 +68,24 @@ export default function MessageInput({ chatId }) {
         onClick={handleSend}
         disabled={sendMessage.isLoading || (!newMessage.trim() && !files.length)}
         title="Отправить"
-        className="btn send-btn"
+        className="send-btn"
         type="submit"
       >
         <FaPaperPlane />
+      </button>
+      <button
+        type="button"
+        className="emoji-btn"
+        onClick={() => setShowEmoji(!showEmoji)}
+        title="Смайлы"
+      >
+        <FaRegSmile />
       </button>
       {showEmoji && (
         <div className="emoji-picker">
           <Picker data={data} onEmojiSelect={addEmoji} locale="ru" />
         </div>
       )}
-      {dragActive && <div className="drag-overlay">Перетащите файл сюда</div>}
     </form>
   );
 } 
