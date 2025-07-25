@@ -1114,15 +1114,28 @@
   z-index: 2;
 }
 .tgweb-layout-wide .chat-area {
+  max-width: 700px;
+  margin: 0 auto;
   flex: 1 1 0%;
   min-width: 0;
-  max-width: calc(100vw - 320px);
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: #f7f7f7;
   overflow: hidden;
 }
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 700px;
+  margin: 0 auto;
+  background: var(--tg-theme-bg-color);
+  height: 100vh;
+  overflow: hidden;
+}
+
 .tgweb-layout-narrow {
   display: flex;
   flex-direction: column;
