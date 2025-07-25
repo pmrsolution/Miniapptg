@@ -1,14 +1,10 @@
 import React from 'react';
 import { useChatContext } from '../context/ChatContext';
+import { MOCK_CHATS } from '../mocks';
 
 export default function Sidebar() {
-  const { chats: realChats, setSelectedChatId } = useChatContext();
-  const mockChats = [
-    { chat_id: 1, title: 'Alice', lastMessage: 'Hi!' },
-    { chat_id: 2, title: 'Bob', lastMessage: '👋' },
-    { chat_id: 3, title: 'Support Bot', lastMessage: 'Need help?' },
-  ];
-  const chats = Array.isArray(realChats) && realChats.length ? realChats : mockChats;
+  const { chats: realChats, setSelectedChatId, isLoading, error } = useChatContext();
+  const chats = isLoading || error || !realChats?.length ? MOCK_CHATS : realChats;
   return (
     <div style={{
       width: 240,
